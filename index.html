@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⛺ 營隊現場即時管理系統</title>
+    <title>⛺ 國中營現場即時管理系統</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body { background-color: #f4f6f9; padding-top: 20px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
@@ -77,18 +77,15 @@
         }
         .inner-clear-btn:hover { color: #0d6efd; }
 
-        /* ✨【終極優化】學員繳費下拉選單安全對稱絕對置中樣式 */
+        /* 學員繳費下拉選單安全對稱絕對置中樣式 */
         .pay-select {
             font-weight: bold;
             font-size: 0.85rem;
-            /* 📝 修正：左右間距調為完全對稱的 12px，徹底移除不對稱排版 */
             padding: 5px 12px; 
             border-radius: 6px;
             text-align: center;
-            /* 📝 修正：強制讓選單選中的中文字在各裝置上達到最高等級的置中表現 */
             text-align-last: center; 
             cursor: pointer;
-            /* 📝 核心修正：移除瀏覽器預設箭頭，徹底釋放右側隱形空間，達成完美的數學幾何置中！ */
             appearance: none;
             -webkit-appearance: none;
             -moz-appearance: none;
@@ -97,27 +94,20 @@
             display: inline-block;
             transition: all 0.2s ease;
         }
-        /* 針對下拉選單展開內部的 option 選項也同步指定置中 */
-        .pay-select option {
-            text-align: center;
-        }
-        /* 已繳費：內斂高質感灰底 */
-        .pay-paid {
-            background-color: #e2e8f0 !important;
-            color: #4a5568 !important;
-            border: 1px solid #cbd5e1 !important;
-        }
-        /* 未繳費：高警示亮紅底 */
-        .pay-unpaid {
-            background-color: #fee2e2 !important;
-            color: #dc2626 !important;
-            border: 1px solid #fca5a5 !important;
-        }
-        /* 其他自訂狀況（如感恩戶、師姑幫忙繳費）：舒適亮藍底高光 */
-        .pay-custom {
-            background-color: #e0f2fe !important;
-            color: #0369a1 !important;
-            border: 1px solid #bae6fd !important;
+        .pay-select option { text-align: center; }
+        
+        .pay-paid { background-color: #e2e8f0 !important; color: #4a5568 !important; border: 1px solid #cbd5e1 !important; }
+        .pay-unpaid { background-color: #fee2e2 !important; color: #dc2626 !important; border: 1px solid #fca5a5 !important; }
+        .pay-custom { background-color: #e0f2fe !important; color: #0369a1 !important; border: 1px solid #bae6fd !important; }
+
+        /* ✨【全新優化】強制縮小狀態標籤尺寸，並與標題文字精準對齊 */
+        #syncStatus {
+            font-size: 0.85rem !important; /* 📝 從大字體鬆綁，縮小為精緻微光尺寸 */
+            vertical-align: middle;       /* 📝 修正：讓縮小後的標籤精準靠中央對齊，不再歪斜 */
+            margin-left: 10px;            /* 留出舒適的大標題間距 */
+            padding: 5px 10px;            /* 縮小標塊本身的肥胖度 */
+            font-weight: bold;
+            letter-spacing: 0.5px;
         }
     </style>
 </head>
@@ -125,7 +115,7 @@
 
 <div class="container-fluid px-4">
     <div class="mb-3">
-        <h2 class="mb-3">⛺ 營隊現場即時管理系統 <span class="badge bg-success" id="syncStatus">連線中...</span></h2>
+        <h2 class="mb-3">⛺ 國中營現場即時管理系統 <span class="badge bg-success" id="syncStatus">連線中...</span></h2>
         
         <div class="row g-3 align-items-center bg-white p-3 rounded shadow-sm border">
             <div class="col-md-2">
@@ -140,7 +130,7 @@
                     <input type="radio" class="btn-check" name="roleRadio" id="radioCamper" checked onclick="switchRole('campers')">
                     <label class="btn btn-outline-primary" for="radioCamper">學員名單 (含隊輔)</label>
                     <input type="radio" class="btn-check" name="roleRadio" id="radioStaff" onclick="switchRole('staff')">
-                    <label class="btn btn-outline-primary" for="radioStaff">純工作人員/總籌組</label>
+                    <label class="btn btn-outline-primary" for="radioStaff">慈青工作人員</label>
                 </div>
             </div>
             
@@ -284,7 +274,6 @@
         if (groups.includes(currentSelected)) filterSelect.value = currentSelected;
     }
 
-    // 現場即時更新功能
     function updateCloudField(index, field, value) {
         if (!currentYear) return;
         database.ref(`${currentYear}/${currentRole}/${index}/${field}`).set(value);
@@ -352,7 +341,6 @@
         searchInput.focus();   
     }
 
-    // 絕對視窗物理感知置頂黑底欄位機制
     function adjustStickyHeader() {
         const table = document.getElementById('mainTable');
         if (!table) return;
@@ -381,7 +369,6 @@
 
     window.addEventListener('scroll', adjustStickyHeader);
 
-    // 渲染表格
     function renderTable() {
         const header = document.getElementById('tableHeader');
         const body = document.getElementById('tableBody');
@@ -428,10 +415,9 @@
                 let tr = document.createElement('tr');
                 if (isAdvisor) tr.className = "advisor-row";
                 
-                // 下拉選單與自訂狀況動態相容機制
                 let payTdHtml = "";
                 if (isAdvisor) {
-                    payTdHtml = ""; // 大小隊輔強制維持最乾淨的空白 null
+                    payTdHtml = ""; 
                 } else {
                     const currentPay = String(item.繳費狀況 || '').trim();
                     
@@ -441,7 +427,7 @@
                     } else if (currentPay === "未繳費" || currentPay === "false" || currentPay === "") {
                         selectClass += " pay-unpaid";
                     } else {
-                        selectClass += " pay-custom"; // 遇到其餘狀況自動高光亮藍色
+                        selectClass += " pay-custom";
                     }
                     
                     let optionsHtml = `
