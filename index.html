@@ -9,14 +9,14 @@
         body { background-color: #f8f9fa; padding-top: 20px; }
         .table-responsive { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         
-        /* 修正先前的錯誤：cursor 為屬性名稱，pointer 為設定值 */
+        /* 🛠️ 修正先前的錯誤：cursor 為屬性名稱，pointer 為設定值 */
         .form-check-input { cursor: pointer; width: 1.2em; height: 1.2em; }
         
-        /* 隊輔底色調整為高識別度亮藍色 */
+        /* 隊輔列底色調整為高識別度亮藍色 */
         .advisor-row { background-color: #bcd1ff !important; }
         .advisor-row td { background-color: transparent !important; }
         
-        /* ✨【核心修改】不論電腦或手機，讓表格黑底欄位這列在往下滑動到最上方時，精準「釘」在頂部不動 */
+        /* ✨ 不論電腦或手機，讓表格黑底欄位這列在往下滑動到最上方時，精準「釘」在頂部不動 */
         #mainTable thead th {
             position: sticky;
             top: 0;
@@ -77,7 +77,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 
 <script>
-    // 保持原本取資料的方法
+    // 保持你原本新加坡節點的取資料網址
     const firebaseConfig = {
         databaseURL: "https://cijiguozhongkuailechengz-26e8d-default-rtdb.asia-southeast1.firebasedatabase.app/"
     };
@@ -170,6 +170,7 @@
         }
 
         if (currentRole === 'campers') {
+            // 已完全刪除「回程交通方式」欄位
             header.innerHTML = `
                 <tr>
                     <th>報到</th><th>發票</th><th>同意書</th>
@@ -188,12 +189,12 @@
                 let tr = document.createElement('tr');
                 if (isAdvisor) tr.className = "advisor-row";
                 
-                // 繳費狀態標籤
+                // 繳費狀況狀態 badge 生成邏輯
                 let payBadge = "";
                 if (isAdvisor) {
                     payBadge = `<span class="badge bg-secondary text-white">隊輔免繳</span>`;
                 } else if (item.繳費狀況 === null || item.繳費狀況 === undefined || String(item.繳費狀況).trim() === "") {
-                    payBadge = ""; 
+                    payBadge = ""; // 繳費狀態未填時直接保持完全留白
                 } else if (item.繳費狀況 === '已繳費') {
                     payBadge = `<span class="badge bg-success">已繳費</span>`;
                 } else if (item.繳費狀況 === '未繳費') {
@@ -202,19 +203,22 @@
                     payBadge = `<span class="badge bg-info text-dark">${item.繳費狀況}</span>`;
                 }
 
-                // 勾選型欄位處理
+                // 勾選型欄位與核心防呆處理
                 let checkinTdHtml = "";
                 let invoiceTdHtml = "";
                 let consentTdHtml = "";
 
                 if (isAdvisor) {
+                    // 大小隊輔列：前三項核對勾選框全面強制留空 null
                     checkinTdHtml = "";
                     invoiceTdHtml = "";
                     consentTdHtml = "";
                 } else {
+                    // 一般學員：正常產生核對勾選方塊
                     checkinTdHtml = `<input type="checkbox" class="form-check-input" ${item.報到 ? 'checked' : ''} onchange="updateCloudField(${index}, '報到', this.checked)">`;
                     consentTdHtml = `<input type="checkbox" class="form-check-input" ${item.同意書 ? 'checked' : ''} onchange="updateCloudField(${index}, '同意書', this.checked)">`;
                     
+                    // 特殊防呆：若學員繳費狀況填寫「感恩戶」，發票欄位改為紅色粗體文字 "X"
                     if (item.繳費狀況 && String(item.繳費狀況).trim() === "感恩戶") {
                         invoiceTdHtml = `<span class="text-danger fw-bold" style="font-size: 1.2rem;">X</span>`;
                     } else {
@@ -222,15 +226,18 @@
                     }
                 }
 
+                // 文字型與備註欄位處理
                 let checkinNoteHtml = "";
                 let confirmHtml = "";
                 let liveNoteHtml = "";
 
                 if (isAdvisor) {
+                    // 大小隊輔列：所有文字備註欄位一律強制留白 null
                     checkinNoteHtml = "";
                     confirmHtml = "";
                     liveNoteHtml = "";
                 } else {
+                    // 一般學員：報到備註與待確認事項改為唯讀的純文字格式；只有現場備註維持 input 框讓使用者即時修改
                     checkinNoteHtml = item.報到備註 || '';
                     confirmHtml = item.待確認事項 || '';
                     liveNoteHtml = `<input type="text" class="form-control form-control-sm border-primary" value="${item.備註 || ''}" onblur="updateCloudField(${index}, '備註', this.value)">`;
@@ -252,6 +259,7 @@
                 body.appendChild(tr);
             });
         } else {
+            // 純工作人員表格：已完全刪除「安單」欄位
             header.innerHTML = `
                 <tr>
                     <th>報到</th><th>組別</th><th>職務</th><th>姓名</th>
