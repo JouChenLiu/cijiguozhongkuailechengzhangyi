@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⛺ 營隊現場即時管理系統</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; padding-top: 20px; }
+        .table-responsive { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .sticky-header { position: sticky; top: 0; background: white; z-index: 10; padding-bottom: 10px; }
+        
+        /* 🛠️ 修正先前記反的錯誤：cursor 為屬性名稱，pointer 為設定值 */
+        .form-check-input { cursor: pointer; width: 1.2em; height: 1.2em; }
+        
+        /* 隊輔底色調整為高識別度亮藍色 */
+        .advisor-row { background-color: #bcd1ff !important; }
+        .advisor-row td { background-color: transparent !important; }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid px-4">
+    <div class="sticky-header">
+        <h2 class="mb-3">⛺ 營隊現場即時管理系統 <span class="badge bg-success" id="syncStatus">連線中...</span></h2>
+        
+        <div class="row g-3 align-items-center bg-white p-3 rounded shadow-sm">
+            <div class="col-md-2">
+                <label class="form-label fw-bold text-danger">📅 選擇年度</label>
+                <select class="form-select border-danger" id="yearFilter" onchange="switchYear(this.value)">
+                    </select>
+            </div>
+            
+            <div class="col-md-3">
+                <label class="form-label fw-bold">1. 選擇管理對象</label>
+                <div class="btn-group w-100" role="group">
+                    <input type="radio" class="btn-check" name="roleRadio" id="radioCamper" checked onclick="switchRole('campers')">
+                    <label class="btn btn-outline-primary" for="radioCamper">學員名單 (含隊輔)</label>
+                    <input type="radio" class="btn-check" name="roleRadio" id="radioStaff" onclick="switchRole('staff')">
+                    <label class="btn btn-outline-primary" for="radioStaff">純工作人員/總籌組</label>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <label class="form-label fw-bold">2. 篩選組別</label>
+                <select class="form-select" id="groupFilter" onchange="renderTable()">
+                    <option value="全部">全部組別</option>
+                </select>
+            </div>
+            
+            <div class="col-md-4 text-end align-self-end">
+                <span class="text-primary d-block small mb-1 fw-bold">🔵 提示：名單內深藍色背景代表隊輔人員。</span>
+                <span class="text-muted d-block small mb-1">修改右側「現場備註」輸入框後點擊旁邊即可即時同步存檔。</span>
+                <button class="btn btn-sm btn-warning" onclick="location.reload()">🔄 強制整理全站</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4 table-responsive">
+        <table class="table table-hover table-bordered align-middle text-center" id="mainTable">
+            <thead class="table-dark" id="tableHeader"></thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+<script>
+    const firebaseConfig = {
+        databaseURL: "https://cijiguozhongkuailechengz-26e8d-default-rtdb.asia-southeast1.firebasedatabase.app/"
+    };
+    
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    let allCampData = {};    
+    let currentYear = "";    
+    let currentRole = 'campers'; 
+
+    database.ref('/').on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+            allCampData = data;
+            document.getElementById('syncStatus').innerText = "雲端即時同步中";
+            document.getElementById('syncStatus').className = "badge bg-success";
+            
+            updateYearFilter();
+            updateGroupFilter();
+            renderTable();
+        } else {
+            document.getElementById('syncStatus').innerText = "資料庫無資料";
+            document.getElementById('syncStatus').className = "badge bg-warning";
+        }
+    }, (error) => {
+        document.getElementById('syncStatus').innerText = "連線中斷";
+        document.getElementById('syncStatus').className = "badge bg-danger";
+    });
+
+    function updateYearFilter() {
+        const yearSelect = document.getElementById('yearFilter');
+        const years = Object.keys(allCampData).sort().reverse();
+        if (years.length === 0) return;
+        if (!currentYear || !years.includes(currentYear)) currentYear = years[0];
+
+        yearSelect.innerHTML = "";
+        years.forEach(y => {
+            yearSelect.innerHTML += `<option value="${y}" ${y === currentYear ? 'selected' : ''}>${y} 年度</option>`;
+        });
+    }
+
+    function switchYear(year) {
+        currentYear = year;
+        updateGroupFilter();
+        renderTable();
+    }
+
+    function switchRole(role) {
+        currentRole = role;
+        updateGroupFilter();
+        renderTable();
+    }
+
+    function updateGroupFilter() {
+        const filterSelect = document.getElementById('groupFilter');
+        const currentSelected = filterSelect.value;
+        const yearData = allCampData[currentYear] || {};
+        const list = yearData[currentRole] || [];
+        
+        const groups = [...new Set(list.map(item => String(item.組別 || '')).filter(g => g))];
+        
+        filterSelect.innerHTML = '<option value="全部">全部組別</option>';
+        groups.forEach(g => {
+            filterSelect.innerHTML += `<option value="${g}">${g}</option>`;
+        });
+        
+        if (groups.includes(currentSelected)) filterSelect.value = currentSelected;
+    }
+
+    function updateCloudField(index, field, value) {
+        if (!currentYear) return;
+        database.ref(`${currentYear}/${currentRole}/${index}/${field}`).set(value);
+    }
+
+    // 渲染表格
+    function renderTable() {
+        const header = document.getElementById('tableHeader');
+        const body = document.getElementById('tableBody');
+        const selectedGroup = document.getElementById('groupFilter').value;
+        
+        body.innerHTML = "";
+        const yearData = allCampData[currentYear] || {};
+        const list = yearData[currentRole] || [];
+
+        if (list.length === 0) {
+            body.innerHTML = `<tr><td colspan="20" class="text-muted p-4">⚠️ 該年度目前沒有資料。</td></tr>`;
+            return;
+        }
+
+        if (currentRole === 'campers') {
+            header.innerHTML = `
+                <tr>
+                    <th>報到</th><th>發票</th><th>同意書</th>
+                    <th>組別</th><th>身分</th><th>姓名</th><th>性別</th><th>繳費狀況</th>
+                    <th>報到備註</th>
+                    <th>待確認事項</th>
+                    <th style="width: 200px;">✍️ 現場備註</th>
+                </tr>`;
+            
+            list.forEach((item, index) => {
+                if (selectedGroup !== "全部" && String(item.組別 || '') !== selectedGroup) return;
+                
+                const identityStr = String(item.身分 || '');
+                const isAdvisor = identityStr.includes("隊輔") || identityStr.includes("工作人員");
+                
+                let tr = document.createElement('tr');
+                if (isAdvisor) tr.className = "advisor-row";
+                
+                // 繳費狀態標籤
+                let payBadge = "";
+                if (isAdvisor) {
+                    payBadge = `<span class="badge bg-secondary text-white">隊輔免繳</span>`;
+                } else if (item.繳費狀況 === null || item.繳費狀況 === undefined || String(item.繳費狀況).trim() === "") {
+                    payBadge = ""; 
+                } else if (item.繳費狀況 === '已繳費') {
+                    payBadge = `<span class="badge bg-success">已繳費</span>`;
+                } else if (item.繳費狀況 === '未繳費') {
+                    payBadge = `<span class="badge bg-danger">未繳費</span>`;
+                } else {
+                    payBadge = `<span class="badge bg-info text-dark">${item.繳費狀況}</span>`;
+                }
+
+                // 勾選型欄位處理
+                let checkinTdHtml = "";
+                let invoiceTdHtml = "";
+                let consentTdHtml = "";
+
+                if (isAdvisor) {
+                    checkinTdHtml = "";
+                    invoiceTdHtml = "";
+                    consentTdHtml = "";
+                } else {
+                    checkinTdHtml = `<input type="checkbox" class="form-check-input" ${item.報到 ? 'checked' : ''} onchange="updateCloudField(${index}, '報到', this.checked)">`;
+                    consentTdHtml = `<input type="checkbox" class="form-check-input" ${item.同意書 ? 'checked' : ''} onchange="updateCloudField(${index}, '同意書', this.checked)">`;
+                    
+                    if (item.繳費狀況 && String(item.繳費狀況).trim() === "感恩戶") {
+                        invoiceTdHtml = `<span class="text-danger fw-bold" style="font-size: 1.2rem;">X</span>`;
+                    } else {
+                        invoiceTdHtml = `<input type="checkbox" class="form-check-input" ${item.發票 ? 'checked' : ''} onchange="updateCloudField(${index}, '發票', this.checked)">`;
+                    }
+                }
+
+                let checkinNoteHtml = "";
+                let confirmHtml = "";
+                let liveNoteHtml = "";
+
+                if (isAdvisor) {
+                    checkinNoteHtml = "";
+                    confirmHtml = "";
+                    liveNoteHtml = "";
+                } else {
+                    checkinNoteHtml = item.報到備註 || '';
+                    confirmHtml = item.待確認事項 || '';
+                    liveNoteHtml = `<input type="text" class="form-control form-control-sm border-primary" value="${item.備註 || ''}" onblur="updateCloudField(${index}, '備註', this.value)">`;
+                }
+
+                tr.innerHTML = `
+                    <td>${checkinTdHtml}</td>
+                    <td>${invoiceTdHtml}</td>
+                    <td>${consentTdHtml}</td>
+                    <td>${item.組別 || ''}</td>
+                    <td><span class="${isAdvisor ? 'fw-bold text-primary' : ''}">${item.身分 || ''}</span></td>
+                    <td class="fw-bold">${item.姓名 || ''}</td>
+                    <td>${item.性別 || ''}</td>
+                    <td>${payBadge}</td>
+                    <td>${checkinNoteHtml}</td>
+                    <td>${confirmHtml}</td>
+                    <td>${liveNoteHtml}</td>
+                `;
+                body.appendChild(tr);
+            });
+        } else {
+            // ✨【表格表頭更動】移除了「安單」欄位
+            header.innerHTML = `
+                <tr>
+                    <th>報到</th><th>組別</th><th>職務</th><th>姓名</th>
+                    <th>生理性別</th><th>身分別</th>
+                    <th style="width: 200px;">✍️ 現場備註</th>
+                </tr>`;
+            
+            list.forEach((item, index) => {
+                if (selectedGroup !== "全部" && String(item.組別 || '') !== selectedGroup) return;
+                
+                let tr = document.createElement('tr');
+                // ✨【單元格更動】同步移除 item.安單 這一格
+                tr.innerHTML = `
+                    <td><input type="checkbox" class="form-check-input" ${item.報到 ? 'checked' : ''} onchange="updateCloudField(${index}, '報到', this.checked)"></td>
+                    <td>${item.組別 || ''}</td>
+                    <td>${item.職務 || ''}</td>
+                    <td class="fw-bold">${item.姓名 || ''}</td>
+                    <td>${item.生理性別 || ''}</td>
+                    <td>${item.身分別 || ''}</td>
+                    <td><input type="text" class="form-control form-control-sm border-primary" value="${item.備註 || ''}" onblur="updateCloudField(${index}, '備註', this.value)"></td>
+                `;
+                body.appendChild(tr);
+            });
+        }
+    }
+</script>
+</body>
+</html>
