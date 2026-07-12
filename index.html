@@ -6,41 +6,135 @@
     <title>⛺ 營隊現場即時管理系統</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { background-color: #f8f9fa; padding-top: 20px; }
-        .table-responsive { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        body { background-color: #f4f6f9; padding-top: 20px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .table-responsive { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border: 1px solid #eef2f5; }
         
-        /* 🛠️ 修正先前的錯誤：cursor 為屬性名稱，pointer 為設定值 */
+        /* 修正滑鼠指針樣式 */
         .form-check-input { cursor: pointer; width: 1.2em; height: 1.2em; }
         
         /* 隊輔列底色調整為高識別度亮藍色 */
         .advisor-row { background-color: #bcd1ff !important; }
         .advisor-row td { background-color: transparent !important; }
         
-        /* ✨ 不論電腦或手機，讓表格黑底欄位這列在往下滑動到最上方時，精準「釘」在頂部不動 */
+        /* 黑色列表欄位樣式優化：啟用 GPU 渲染加速，滾動置頂時絕不抖動 */
         #mainTable thead th {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background-color: #212529 !important; /* 強制覆蓋固定的黑底，確保滾動時文字不會穿透重疊 */
+            background-color: #212529 !important;
             color: white !important;
-            box-shadow: inset 0 -2px 0 #32383e; /* 保持邊框線條清晰 */
+            box-shadow: inset 0 -1px 0 #32383e;
+            z-index: 102;
+            will-change: transform;
+        }
+        
+        /* 統計看板美化 */
+        .stats-box {
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 14px !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: #ffffff;
+        }
+        
+        /* 作用中：學員高光（科技藍） */
+        .active-camper {
+            background-color: #f0f7ff !important;
+            border-left: 6px solid #0d6efd !important;
+            border-color: #bcd1ff !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(13, 110, 253, 0.08) !important;
+        }
+        
+        /* 作用中：工作人員高光（森林綠） */
+        .active-staff {
+            background-color: #f0fdf4 !important;
+            border-left: 6px solid #198754 !important;
+            border-color: #bbf7d0 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(25, 135, 84, 0.08) !important;
+        }
+        
+        /* 未選中：極簡內斂灰 */
+        .inactive-box {
+            background-color: #ffffff !important;
+            border-left: 6px solid #cbd5e1 !important;
+            opacity: 0.6;
+        }
+
+        /* 內嵌式叉叉按鈕專用樣式 */
+        .search-container { position: relative; }
+        .inner-clear-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #a0aec0;
+            font-weight: bold;
+            font-size: 1.1rem;
+            padding: 0 4px;
+            z-index: 5;
+            transition: color 0.2s ease;
+            display: none;
+        }
+        .inner-clear-btn:hover { color: #0d6efd; }
+
+        /* ✨【終極優化】學員繳費下拉選單安全對稱絕對置中樣式 */
+        .pay-select {
+            font-weight: bold;
+            font-size: 0.85rem;
+            /* 📝 修正：左右間距調為完全對稱的 12px，徹底移除不對稱排版 */
+            padding: 5px 12px; 
+            border-radius: 6px;
+            text-align: center;
+            /* 📝 修正：強制讓選單選中的中文字在各裝置上達到最高等級的置中表現 */
+            text-align-last: center; 
+            cursor: pointer;
+            /* 📝 核心修正：移除瀏覽器預設箭頭，徹底釋放右側隱形空間，達成完美的數學幾何置中！ */
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: auto; 
+            min-width: 105px; 
+            display: inline-block;
+            transition: all 0.2s ease;
+        }
+        /* 針對下拉選單展開內部的 option 選項也同步指定置中 */
+        .pay-select option {
+            text-align: center;
+        }
+        /* 已繳費：內斂高質感灰底 */
+        .pay-paid {
+            background-color: #e2e8f0 !important;
+            color: #4a5568 !important;
+            border: 1px solid #cbd5e1 !important;
+        }
+        /* 未繳費：高警示亮紅底 */
+        .pay-unpaid {
+            background-color: #fee2e2 !important;
+            color: #dc2626 !important;
+            border: 1px solid #fca5a5 !important;
+        }
+        /* 其他自訂狀況（如感恩戶、師姑幫忙繳費）：舒適亮藍底高光 */
+        .pay-custom {
+            background-color: #e0f2fe !important;
+            color: #0369a1 !important;
+            border: 1px solid #bae6fd !important;
         }
     </style>
 </head>
 <body>
 
 <div class="container-fluid px-4">
-    <div class="mb-4">
+    <div class="mb-3">
         <h2 class="mb-3">⛺ 營隊現場即時管理系統 <span class="badge bg-success" id="syncStatus">連線中...</span></h2>
         
-        <div class="row g-3 align-items-center bg-white p-3 rounded shadow-sm">
+        <div class="row g-3 align-items-center bg-white p-3 rounded shadow-sm border">
             <div class="col-md-2">
                 <label class="form-label fw-bold text-danger">📅 選擇年度</label>
                 <select class="form-select border-danger" id="yearFilter" onchange="switchYear(this.value)">
                     </select>
             </div>
             
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <label class="form-label fw-bold">1. 選擇管理對象</label>
                 <div class="btn-group w-100" role="group">
                     <input type="radio" class="btn-check" name="roleRadio" id="radioCamper" checked onclick="switchRole('campers')">
@@ -57,10 +151,53 @@
                 </select>
             </div>
             
-            <div class="col-md-4 text-end align-self-end">
-                <span class="text-primary d-block small mb-1 fw-bold">🔵 提示：名單內深藍色背景代表隊輔人員。</span>
-                <span class="text-muted d-block small mb-1">修改右側「現場備註」輸入框後點擊旁邊即可即時同步存檔。</span>
-                <button class="btn btn-sm btn-warning" onclick="location.reload()">🔄 強制整理全站</button>
+            <div class="col-md-3">
+                <label class="form-label fw-bold text-primary">🔍 3. 搜尋姓名</label>
+                <div class="search-container">
+                    <input type="text" class="form-control border-primary pe-5" id="nameSearch" placeholder="請輸入姓名..." oninput="handleNameSearch()">
+                    <button type="button" class="inner-clear-btn" onclick="clearSearchInput()" id="clearBtn" title="清空搜尋內容">✕</button>
+                </div>
+            </div>
+            
+            <div class="col-12 d-flex justify-content-between align-items-end mt-2 pt-2 border-top">
+                <div>
+                    <span class="text-primary d-block small mb-1 fw-bold">🔵 提示：名單內深藍色背景代表隊輔人員。</span>
+                    <span class="text-muted d-block small">修改右側「現場備註」輸入框後點擊旁邊即可即時同步存檔。</span>
+                </div>
+                <div>
+                    <button class="btn btn-sm btn-warning fw-bold" onclick="location.reload()">🔄 強制整理全站</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-md-6">
+            <div class="card p-3 shadow-sm stats-box" id="camperStatsBox">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1 mb-1 fw-bold" style="font-size:0.75rem;">👥 營隊學員</span>
+                        <div class="fw-black text-dark h5 mb-0" id="camperGroupLabel" style="letter-spacing: 0.3px;">全體學員總計</div>
+                    </div>
+                    <div class="text-end">
+                        <span class="fs-4 fw-bold text-primary align-middle" id="camperStatsText">0 / 0</span>
+                        <span class="badge bg-primary text-white ms-2 px-2 py-1.5 align-middle font-monospace" id="camperStatsPercent" style="font-size:0.85rem;">0%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="card p-3 shadow-sm stats-box" id="staffStatsBox">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 mb-1 fw-bold" style="font-size:0.75rem;">🛠️ 工作團隊</span>
+                        <div class="fw-black text-dark h5 mb-0" id="staffGroupLabel" style="letter-spacing: 0.3px;">全體工作人員總計</div>
+                    </div>
+                    <div class="text-end">
+                        <span class="fs-4 fw-bold text-success align-middle" id="staffStatsText">0 / 0</span>
+                        <span class="badge bg-success text-white ms-2 px-2 py-1.5 align-middle font-monospace" id="staffStatsPercent" style="font-size:0.85rem;">0%</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -77,7 +214,6 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 
 <script>
-    // 保持你原本新加坡節點的取資料網址
     const firebaseConfig = {
         databaseURL: "https://cijiguozhongkuailechengz-26e8d-default-rtdb.asia-southeast1.firebasedatabase.app/"
     };
@@ -148,21 +284,122 @@
         if (groups.includes(currentSelected)) filterSelect.value = currentSelected;
     }
 
-    // 核心即時更新功能
+    // 現場即時更新功能
     function updateCloudField(index, field, value) {
         if (!currentYear) return;
         database.ref(`${currentYear}/${currentRole}/${index}/${field}`).set(value);
     }
+
+    // 動態運算報到進度
+    function calculateLiveStats() {
+        const selectedGroup = document.getElementById('groupFilter').value;
+        const yearData = allCampData[currentYear] || {};
+        const campersList = yearData['campers'] || [];
+        const staffList = yearData['staff'] || [];
+
+        let camperChecked = 0, camperTotal = 0;
+        let staffChecked = 0, staffTotal = 0;
+
+        camperChecked = campersList.filter(i => !String(i.身分||'').includes("隊輔") && !String(i.身分||'').includes("工作人員") && (selectedGroup === "全部" || String(i.組別||'') === selectedGroup) && i.報到).length;
+        camperTotal = campersList.filter(i => !String(i.身分||'').includes("隊輔") && !String(i.身分||'').includes("工作人員") && (selectedGroup === "全部" || String(i.組別||'') === selectedGroup)).length;
+        
+        staffChecked = staffList.filter(i => (selectedGroup === "全部" || String(i.組別||'') === selectedGroup) && i.報到).length;
+        staffTotal = staffList.filter(i => selectedGroup === "全部" || String(i.組別||'') === selectedGroup).length;
+
+        const camperPercent = camperTotal > 0 ? Math.round((camperChecked / camperTotal) * 100) : 0;
+        const staffPercent = staffTotal > 0 ? Math.round((staffChecked / staffTotal) * 100) : 0;
+
+        document.getElementById('camperStatsText').innerText = `${camperChecked} / ${camperTotal}`;
+        document.getElementById('camperStatsPercent').innerText = `${camperPercent}%`;
+        document.getElementById('staffStatsText').innerText = `${staffChecked} / ${staffTotal}`;
+        document.getElementById('staffStatsPercent').innerText = `${staffPercent}%`;
+
+        const cBox = document.getElementById('camperStatsBox');
+        const sBox = document.getElementById('staffStatsBox');
+
+        if (currentRole === 'campers') {
+            cBox.className = "card p-3 shadow-sm stats-box active-camper";
+            sBox.className = "card p-3 shadow-sm stats-box inactive-box";
+            document.getElementById('camperGroupLabel').innerText = selectedGroup === "全部" ? "全體學員總計 (不含隊輔)" : `學員 ｜ 第 ${selectedGroup} 組`;
+            document.getElementById('staffGroupLabel').innerText = "全體工作團隊";
+        } else {
+            cBox.className = "card p-3 shadow-sm stats-box inactive-box";
+            sBox.className = "card p-3 shadow-sm stats-box active-staff";
+            document.getElementById('camperGroupLabel').innerText = "全體學員 (不含隊輔)";
+            document.getElementById('staffGroupLabel').innerText = selectedGroup === "全部" ? "全體工作人員總計" : `工作人員 ｜ ${selectedGroup}`;
+        }
+    }
+
+    function handleNameSearch() {
+        const searchInput = document.getElementById('nameSearch');
+        const clearBtn = document.getElementById('clearBtn');
+        
+        if (searchInput.value.trim() !== "") {
+            document.getElementById('groupFilter').value = "全部";
+            clearBtn.style.display = "block";
+        } else {
+            clearBtn.style.display = "none";
+        }
+        renderTable(); 
+    }
+
+    function clearSearchInput() {
+        const searchInput = document.getElementById('nameSearch');
+        searchInput.value = ""; 
+        document.getElementById('clearBtn').style.display = "none";
+        document.getElementById('groupFilter').value = "全部"; 
+        renderTable();         
+        searchInput.focus();   
+    }
+
+    // 絕對視窗物理感知置頂黑底欄位機制
+    function adjustStickyHeader() {
+        const table = document.getElementById('mainTable');
+        if (!table) return;
+        const thead = table.querySelector('thead');
+        const ths = table.querySelectorAll('thead th');
+        if (ths.length === 0) return;
+        
+        const rect = table.getBoundingClientRect();
+        
+        if (rect.top < 0) {
+            const tableHeight = table.offsetHeight;
+            const headerHeight = thead.offsetHeight;
+            const maxTranslate = tableHeight - headerHeight - 12;
+            const currentTranslate = Math.abs(rect.top);
+            
+            const translateVal = currentTranslate < maxTranslate ? currentTranslate : maxTranslate;
+            ths.forEach(th => {
+                th.style.transform = `translateY(${translateVal}px)`;
+            });
+        } else {
+            ths.forEach(th => {
+                th.style.transform = 'translateY(0px)';
+            });
+        }
+    }
+
+    window.addEventListener('scroll', adjustStickyHeader);
 
     // 渲染表格
     function renderTable() {
         const header = document.getElementById('tableHeader');
         const body = document.getElementById('tableBody');
         const selectedGroup = document.getElementById('groupFilter').value;
-        
+        const nameSearchQuery = document.getElementById('nameSearch').value.trim().toLowerCase();
+
         body.innerHTML = "";
         const yearData = allCampData[currentYear] || {};
         const list = yearData[currentRole] || [];
+
+        calculateLiveStats();
+
+        const clearBtn = document.getElementById('clearBtn');
+        if (nameSearchQuery !== "") {
+            clearBtn.style.display = "block";
+        } else {
+            clearBtn.style.display = "none";
+        }
 
         if (list.length === 0) {
             body.innerHTML = `<tr><td colspan="20" class="text-muted p-4">⚠️ 該年度目前沒有資料。</td></tr>`;
@@ -170,7 +407,6 @@
         }
 
         if (currentRole === 'campers') {
-            // 已完全刪除「回程交通方式」欄位
             header.innerHTML = `
                 <tr>
                     <th>報到</th><th>發票</th><th>同意書</th>
@@ -183,42 +419,59 @@
             list.forEach((item, index) => {
                 if (selectedGroup !== "全部" && String(item.組別 || '') !== selectedGroup) return;
                 
+                const nameStr = String(item.姓名 || '').toLowerCase();
+                if (nameSearchQuery && !nameStr.includes(nameSearchQuery)) return;
+
                 const identityStr = String(item.身分 || '');
                 const isAdvisor = identityStr.includes("隊輔") || identityStr.includes("工作人員");
                 
                 let tr = document.createElement('tr');
                 if (isAdvisor) tr.className = "advisor-row";
                 
-                // 繳費狀況狀態 badge 生成邏輯
-                let payBadge = "";
+                // 下拉選單與自訂狀況動態相容機制
+                let payTdHtml = "";
                 if (isAdvisor) {
-                    payBadge = `<span class="badge bg-secondary text-white">隊輔免繳</span>`;
-                } else if (item.繳費狀況 === null || item.繳費狀況 === undefined || String(item.繳費狀況).trim() === "") {
-                    payBadge = ""; // 繳費狀態未填時直接保持完全留白
-                } else if (item.繳費狀況 === '已繳費') {
-                    payBadge = `<span class="badge bg-success">已繳費</span>`;
-                } else if (item.繳費狀況 === '未繳費') {
-                    payBadge = `<span class="badge bg-danger">未繳費</span>`;
+                    payTdHtml = ""; // 大小隊輔強制維持最乾淨的空白 null
                 } else {
-                    payBadge = `<span class="badge bg-info text-dark">${item.繳費狀況}</span>`;
+                    const currentPay = String(item.繳費狀況 || '').trim();
+                    
+                    let selectClass = "pay-select";
+                    if (currentPay === "已繳費" || currentPay === "true") {
+                        selectClass += " pay-paid";
+                    } else if (currentPay === "未繳費" || currentPay === "false" || currentPay === "") {
+                        selectClass += " pay-unpaid";
+                    } else {
+                        selectClass += " pay-custom"; // 遇到其餘狀況自動高光亮藍色
+                    }
+                    
+                    let optionsHtml = `
+                        <option value="已繳費" ${(currentPay === "已繳費" || currentPay === "true") ? 'selected' : ''}>已繳費</option>
+                        <option value="未繳費" ${(currentPay === "未繳費" || currentPay === "false" || currentPay === "") ? 'selected' : ''}>未繳費</option>
+                    `;
+                    
+                    if (currentPay !== "已繳費" && currentPay !== "true" && currentPay !== "未繳費" && currentPay !== "false" && currentPay !== "") {
+                        optionsHtml += `<option value="${currentPay}" selected>${currentPay}</option>`;
+                    }
+                    
+                    payTdHtml = `
+                        <select class="${selectClass}" onchange="updateCloudField(${index}, '繳費狀況', this.value); renderTable();">
+                            ${optionsHtml}
+                        </select>
+                    `;
                 }
 
-                // 勾選型欄位與核心防呆處理
                 let checkinTdHtml = "";
                 let invoiceTdHtml = "";
                 let consentTdHtml = "";
 
                 if (isAdvisor) {
-                    // 大小隊輔列：前三項核對勾選框全面強制留空 null
                     checkinTdHtml = "";
                     invoiceTdHtml = "";
                     consentTdHtml = "";
                 } else {
-                    // 一般學員：正常產生核對勾選方塊
                     checkinTdHtml = `<input type="checkbox" class="form-check-input" ${item.報到 ? 'checked' : ''} onchange="updateCloudField(${index}, '報到', this.checked)">`;
                     consentTdHtml = `<input type="checkbox" class="form-check-input" ${item.同意書 ? 'checked' : ''} onchange="updateCloudField(${index}, '同意書', this.checked)">`;
                     
-                    // 特殊防呆：若學員繳費狀況填寫「感恩戶」，發票欄位改為紅色粗體文字 "X"
                     if (item.繳費狀況 && String(item.繳費狀況).trim() === "感恩戶") {
                         invoiceTdHtml = `<span class="text-danger fw-bold" style="font-size: 1.2rem;">X</span>`;
                     } else {
@@ -226,18 +479,15 @@
                     }
                 }
 
-                // 文字型與備註欄位處理
                 let checkinNoteHtml = "";
                 let confirmHtml = "";
                 let liveNoteHtml = "";
 
                 if (isAdvisor) {
-                    // 大小隊輔列：所有文字備註欄位一律強制留白 null
                     checkinNoteHtml = "";
                     confirmHtml = "";
                     liveNoteHtml = "";
                 } else {
-                    // 一般學員：報到備註與待確認事項改為唯讀的純文字格式；只有現場備註維持 input 框讓使用者即時修改
                     checkinNoteHtml = item.報到備註 || '';
                     confirmHtml = item.待確認事項 || '';
                     liveNoteHtml = `<input type="text" class="form-control form-control-sm border-primary" value="${item.備註 || ''}" onblur="updateCloudField(${index}, '備註', this.value)">`;
@@ -251,7 +501,7 @@
                     <td><span class="${isAdvisor ? 'fw-bold text-primary' : ''}">${item.身分 || ''}</span></td>
                     <td class="fw-bold">${item.姓名 || ''}</td>
                     <td>${item.性別 || ''}</td>
-                    <td>${payBadge}</td>
+                    <td>${payTdHtml}</td>
                     <td>${checkinNoteHtml}</td>
                     <td>${confirmHtml}</td>
                     <td>${liveNoteHtml}</td>
@@ -259,17 +509,19 @@
                 body.appendChild(tr);
             });
         } else {
-            // 純工作人員表格：已完全刪除「安單」欄位
             header.innerHTML = `
                 <tr>
                     <th>報到</th><th>組別</th><th>職務</th><th>姓名</th>
-                    <th>生理性別</th><th>身分別</th>
+                    <th>生理性別</th><th>身分別</th><th>⏱️ 全程參與</th>
                     <th style="width: 200px;">✍️ 現場備註</th>
                 </tr>`;
             
             list.forEach((item, index) => {
                 if (selectedGroup !== "全部" && String(item.組別 || '') !== selectedGroup) return;
                 
+                const nameStr = String(item.姓名 || '').toLowerCase();
+                if (nameSearchQuery && !nameStr.includes(nameSearchQuery)) return;
+
                 let tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td><input type="checkbox" class="form-check-input" ${item.報到 ? 'checked' : ''} onchange="updateCloudField(${index}, '報到', this.checked)"></td>
@@ -278,11 +530,14 @@
                     <td class="fw-bold">${item.姓名 || ''}</td>
                     <td>${item.生理性別 || ''}</td>
                     <td>${item.身分別 || ''}</td>
+                    <td><input type="text" class="form-control form-control-sm border-success text-center" value="${item.全程參與 || ''}" onblur="updateCloudField(${index}, '全程參與', this.value)" style="min-width:90px;"></td>
                     <td><input type="text" class="form-control form-control-sm border-primary" value="${item.備註 || ''}" onblur="updateCloudField(${index}, '備註', this.value)"></td>
                 `;
                 body.appendChild(tr);
             });
         }
+        
+        setTimeout(adjustStickyHeader, 20);
     }
 </script>
 </body>
