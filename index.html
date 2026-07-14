@@ -458,7 +458,7 @@
                     checkinTdHtml = `<input type="checkbox" class="form-check-input" ${item.報到 ? 'checked' : ''} onchange="updateCloudField(${index}, '報到', this.checked)">`;
                     consentTdHtml = `<input type="checkbox" class="form-check-input" ${item.同意書 ? 'checked' : ''} onchange="updateCloudField(${index}, '同意書', this.checked)">`;
                     
-                    if (item.繳費狀況 && String(item.繳費狀況).trim() === "感恩戶" || "師姑幫忙繳費") {
+                    if (item.繳費狀況 && (String(item.繳費狀況).trim() === "感恩戶" || String(item.繳費狀況).trim() === "師姑幫忙繳費")) {
                         invoiceTdHtml = `<span class="text-danger fw-bold" style="font-size: 1.2rem;">X</span>`;
                     } else {
                         invoiceTdHtml = `<input type="checkbox" class="form-check-input" ${item.發票 ? 'checked' : ''} onchange="updateCloudField(${index}, '發票', this.checked)">`;
