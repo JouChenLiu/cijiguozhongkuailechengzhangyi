@@ -6,7 +6,13 @@
     <title>⛺ 國中營現場即時管理系統</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { background-color: #f4f6f9; padding-top: 20px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        /* 💡 修正：將 padding-top 改為 0，改用 margin-top 增加上方間距，避免干擾 sticky 定位 */
+        body { 
+            background-color: #f4f6f9; 
+            padding-top: 0px !important; 
+            margin-top: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
+        }
         
         /* 確保外層包覆容器有正確的定位基準 */
         .table-responsive { 
@@ -16,7 +22,7 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
             border: 1px solid #eef2f5;
             position: relative;
-            /* 💡 關鍵修正：移除可能干擾 position: sticky 的 overflow 設定，讓頁面滾動時表頭能順利置頂 */
+            /* 確保滾動時置頂功能不受影響 */
             overflow: visible !important; 
         }
         
@@ -27,17 +33,24 @@
         .advisor-row { background-color: #bcd1ff !important; }
         .advisor-row td { background-color: transparent !important; }
         
-        /* * 🛠️ 置頂功能核心：
-         * 1. 確保 top 的值為 -20px (因為 body 有 padding-top: 20px)，讓表頭完美貼齊螢幕頂部
-         * 2. 提升 z-index 到 1030，確保滑動時下方的文字框或按鈕絕對不會蓋過黑色表頭
+        /* * 🛠️ 置頂功能核心修正：
+         * 1. 將 top 改為 0 !important，確保滾動到頂部時，表頭邊界精準對齊螢幕最上方，不被切掉[cite: 2]
+         * 2. 提升 z-index 到 1030，確保滑動時下方的文字框或按鈕絕對不會蓋過黑色表頭[cite: 2]
          */
         #mainTable thead th {
             position: sticky !important;
-            top: -20px !important;
+            top: 0 !important;
             background-color: #212529 !important;
             color: white !important;
             box-shadow: inset 0 -1px 0 #32383e, 0 2px 5px rgba(0,0,0,0.15);
             z-index: 1030 !important;
+            /* 讓表頭也有舒適的上下高度 */
+            padding: 12px 10px !important;
+        }
+
+        /* 💡 核心列高微調：將原本 12px 的上下 Padding 縮減至精緻的 8px，高度剛剛好 */
+        #mainTable tbody td {
+            padding: 8px 10px !important;
         }
         
         /* 統計看板美化 */
@@ -128,10 +141,10 @@
         /* 智慧 Pop 視窗定位與微調間距樣式定義區 */
         .td-relative { position: relative; }
         
-        /* 📝 緊湊邊距樣式：壓縮左右內邊距，讓文字框完美貼合 table 框線 */
+        /* 📝 緊湊邊距樣式：同步縮減至上下 8px 內邊距，與其他欄位保持絕對對齊 */
         .td-snug {
             position: relative;
-            padding: 4px 6px !important; 
+            padding: 8px 6px !important; 
         }
 
         .input-expandable {
