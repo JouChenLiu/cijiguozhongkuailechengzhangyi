@@ -525,6 +525,7 @@
 
         const timestamp = new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' });
         
+        // 💡 移除登入狀態檢查，直接執行寫入
         database.ref('2026/contacts').push({
             sender: sender,
             message: message,
@@ -536,7 +537,8 @@
             const contactModal = bootstrap.Modal.getInstance(document.getElementById('contactModal'));
             contactModal.hide();
         }).catch((err) => {
-            alert("訊息傳送失敗，請確認網路或登入狀態！");
+            // 💡 若這裡跳出錯誤，通常是因為 Firebase Rules 尚未更新成 true
+            alert("訊息傳送失敗，請確認 Firebase 安全規則設定是否已開放寫入權限。");
         });
     }
 
