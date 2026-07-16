@@ -596,7 +596,9 @@
 
     function updateYearFilter() {
         const yearSelect = document.getElementById('yearFilter');
-        const years = Object.keys(allCampData).sort().reverse();
+        // 💡 修正：過濾掉 'users' 節點，確保下拉選單只有真正的年度數字
+        const years = Object.keys(allCampData).filter(key => key !== 'users').sort().reverse();
+        
         if (years.length === 0) return;
         if (!currentYear || !years.includes(currentYear)) currentYear = years[0];
 
