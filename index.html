@@ -6,7 +6,6 @@
     <title>⛺ 國中營現場即時管理系統</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* 💡 修正：將 padding-top 改為 0，改用 margin-top 增加上方間距，避免干擾 sticky 定位 */
         body { 
             background-color: #f4f6f9; 
             padding-top: 0px !important; 
@@ -14,7 +13,6 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
         }
         
-        /* 確保外層包覆容器有正確的定位基準 */
         .table-responsive { 
             background: white; 
             padding: 15px; 
@@ -22,21 +20,15 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
             border: 1px solid #eef2f5;
             position: relative;
-            /* 確保滾動時置頂功能不受影響 */
             overflow: visible !important; 
         }
         
-        /* 修正滑鼠指針樣式 */
         .form-check-input { cursor: pointer; width: 1.2em; height: 1.2em; }
+        .form-check-input:disabled { cursor: not-allowed; }
         
-        /* 隊輔列底色調整為高識別度亮藍色 */
         .advisor-row { background-color: #bcd1ff !important; }
         .advisor-row td { background-color: transparent !important; }
         
-        /* * 🛠️ 置頂功能核心修正：
-         * 1. 將 top 改為 0 !important，確保滾動到頂部時，表頭邊界精準對齊螢幕最上方，不被切掉[cite: 2]
-         * 2. 提升 z-index 到 1030，確保滑動時下方的文字框或按鈕絕對不會蓋過黑色表頭[cite: 2]
-         */
         #mainTable thead th {
             position: sticky !important;
             top: 0 !important;
@@ -44,16 +36,13 @@
             color: white !important;
             box-shadow: inset 0 -1px 0 #32383e, 0 2px 5px rgba(0,0,0,0.15);
             z-index: 1030 !important;
-            /* 讓表頭也有舒適的上下高度 */
             padding: 12px 10px !important;
         }
 
-        /* 💡 核心列高微調：將原本 12px 的上下 Padding 縮減至精緻的 8px，高度剛剛好 */
         #mainTable tbody td {
             padding: 8px 10px !important;
         }
         
-        /* 統計看板美化 */
         .stats-box {
             border: 1px solid #e2e8f0 !important;
             border-radius: 14px !important;
@@ -61,7 +50,6 @@
             background-color: #ffffff;
         }
         
-        /* 作用中：學員高光（科技藍） */
         .active-camper {
             background-color: #f0f7ff !important;
             border-left: 6px solid #0d6efd !important;
@@ -70,7 +58,6 @@
             box-shadow: 0 6px 15px rgba(13, 110, 253, 0.08) !important;
         }
         
-        /* 作用中：工作人員高光（森林綠） */
         .active-staff {
             background-color: #f0fdf4 !important;
             border-left: 6px solid #198754 !important;
@@ -79,14 +66,12 @@
             box-shadow: 0 6px 15px rgba(25, 135, 84, 0.08) !important;
         }
         
-        /* 未選中：極簡內斂灰 */
         .inactive-box {
             background-color: #ffffff !important;
             border-left: 6px solid #cbd5e1 !important;
             opacity: 0.6;
         }
 
-        /* 內嵌式叉叉按鈕專用樣式 */
         .search-container { position: relative; }
         .inner-clear-btn {
             position: absolute;
@@ -105,48 +90,22 @@
         }
         .inner-clear-btn:hover { color: #0d6efd; }
 
-        /* 學員繳費下拉選單安全對稱絕對置中樣式 */
-        .pay-select {
-            font-weight: bold;
-            font-size: 0.85rem;
-            padding: 5px 12px; 
-            border-radius: 6px;
-            text-align: center;
-            text-align-last: center; 
-            cursor: pointer;
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            width: auto; 
-            min-width: 105px; 
-            display: inline-block;
-            transition: all 0.2s ease;
-        }
-        .pay-select option { text-align: center; }
-        
-        .pay-paid { background-color: #e2e8f0 !important; color: #4a5568 !important; border: 1px solid #cbd5e1 !important; }
-        .pay-unpaid { background-color: #fee2e2 !important; color: #dc2626 !important; border: 1px solid #fca5a5 !important; }
-        .pay-custom { background-color: #e0f2fe !important; color: #0369a1 !important; border: 1px solid #bae6fd !important; }
-
-        /* 強制縮小狀態標籤尺寸，並與標題文字精準對齊 */
         #syncStatus {
-            font-size: 0.85rem !important; /* 📝 從大字體鬆綁，縮小為精緻微光尺寸 */
-            vertical-align: middle;       /* 📝 修正：讓縮小後的標籤精準靠中央對齊，不再歪斜 */
-            margin-left: 10px;            /* 留出舒適的大標題間距 */
-            padding: 5px 10px;            /* 縮小標塊本身的肥胖度 */
+            font-size: 0.85rem !important; 
+            vertical-align: middle;       
+            margin-left: 10px;            
+            padding: 5px 10px;            
             font-weight: bold;
             letter-spacing: 0.5px;
         }
 
-        /* 智慧 Pop 視窗定位與微調間距樣式定義區 */
         .td-relative { position: relative; }
-        
-        /* 📝 緊湊邊距樣式：同步縮減至上下 8px 內邊距，與其他欄位保持絕對對齊 */
         .td-snug {
             position: relative;
             padding: 8px 6px !important; 
         }
 
+        /* 💡 文字框基礎樣式修正 */
         .input-expandable {
             height: 31px;
             min-height: 31px;
@@ -158,84 +117,81 @@
             transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
         }
         
-        /* 🟢 學員：「報到備註」、「待確認事項」Pop 機制（已調整為原始寬度 100%） */
-        .input-short-pop {
-            width: 100%;
-            margin: 0 auto;
+        /* 💡 將原本的 disabled 樣式分離，針對 readonly 加入提示可以點擊的視覺引導 */
+        .input-expandable:disabled, 
+        .input-expandable[readonly] {
+            background-color: #f8f9fa !important;
+            border-color: #e2e8f0 !important;
+            color: #64748b !important;
         }
-        .input-short-pop:focus {
-            position: absolute;
-            right: 0 !important;           
-            left: auto !important;         
-            width: 100% !important;        
-            max-width: 85vw !important;    
-            height: 110px !important;       
-            max-height: 110px !important;
-            transform: translate(0, -15px) scale(1.01); 
-            white-space: normal !important;
-            overflow-y: auto !important;   
-            z-index: 1010;                 
-            text-align: left !important;   
-            font-size: 0.95rem !important; 
-            background-color: #ffffff !important;
-            border-color: #198754 !important; 
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important; 
+        .input-expandable:disabled {
+            cursor: not-allowed;
         }
-
-        /* 🟢 工作人員：「全程參與」彈跳機制（已調整為原始寬度 100%） */
-        .input-part-pop {
-            width: 100%;                  
-            margin: 0 auto;
+        .input-expandable[readonly] {
+            cursor: pointer; /* 提示使用者可以點擊展開閱讀 */
         }
-        .input-part-pop:focus {
-            position: absolute;
-            right: 0 !important;           
-            left: auto !important;         
-            width: 100% !important;        
-            max-width: 85vw !important;    
-            height: 110px !important;       
-            max-height: 110px !important;
-            transform: translate(0, -15px) scale(1.01); 
-            white-space: normal !important;
-            overflow-y: auto !important;   
-            z-index: 1010;
-            text-align: left !important;    
-            font-size: 0.95rem !important; 
-            background-color: #ffffff !important;
-            border-color: #198754 !important; 
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+        
+        /* 🟢 學員：「報到備註」、「待確認事項」Pop 機制 */
+        .input-short-pop { width: 100%; margin: 0 auto; }
+        .input-short-pop:focus:not(:disabled) {
+            position: absolute; right: 0 !important; left: auto !important; width: 100% !important;        
+            max-width: 85vw !important; height: 110px !important; max-height: 110px !important;
+            transform: translate(0, -15px) scale(1.01); white-space: normal !important; overflow-y: auto !important;   
+            z-index: 1010; text-align: left !important; font-size: 0.95rem !important; 
+            background-color: #ffffff !important; border-color: #198754 !important; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important; cursor: text;
         }
 
-        /* 🔵 右側「現場備註」大文字框專用 Pop 機制（已調整為原始寬度 100%） */
-        .input-long-pop {
-            width: 100%;
+        /* 🟢 工作人員：「全程參與」彈跳機制 */
+        .input-part-pop { width: 100%; margin: 0 auto; }
+        .input-part-pop:focus:not(:disabled) {
+            position: absolute; right: 0 !important; left: auto !important; width: 100% !important;        
+            max-width: 85vw !important; height: 110px !important; max-height: 110px !important;
+            transform: translate(0, -15px) scale(1.01); white-space: normal !important; overflow-y: auto !important;   
+            z-index: 1010; text-align: left !important; font-size: 0.95rem !important; 
+            background-color: #ffffff !important; border-color: #198754 !important; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important; cursor: text;
         }
-        .input-long-pop:focus {
-            position: absolute;
-            right: 0 !important;           
-            left: auto !important;         
-            width: 100% !important;        
-            max-width: 85vw !important;    
-            height: 102px !important;      
-            max-height: 102px !important;
-            transform: translate(0, -15px) scale(1.01); 
-            white-space: normal !important;
-            overflow-y: auto !important;
-            z-index: 1010;
-            text-align: left !important;
-            font-size: 0.95rem !important; 
-            background-color: #ffffff !important;
-            border-color: #0d6efd !important; 
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18) !important;
+
+        /* 🔵 右側「現場備註」大文字框專用 Pop 機制 */
+        .input-long-pop { width: 100%; }
+        .input-long-pop:focus:not(:disabled) {
+            position: absolute; right: 0 !important; left: auto !important; width: 100% !important;        
+            max-width: 85vw !important; height: 102px !important; max-height: 102px !important;
+            transform: translate(0, -15px) scale(1.01); white-space: normal !important; overflow-y: auto !important;
+            z-index: 1010; text-align: left !important; font-size: 0.95rem !important; 
+            background-color: #ffffff !important; border-color: #0d6efd !important; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18) !important; cursor: text;
+        }
+
+        /* 💡 唯讀模式下點擊展開的專屬視覺回饋 (低調灰) */
+        .input-expandable[readonly]:focus {
+            border-color: #cbd5e1 !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+        }
+
+        /* 聯繫功能懸浮按鈕 */
+        .contact-widget {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 1050;
         }
     </style>
 </head>
 <body>
 
 <div class="container-fluid px-4">
+    <div class="mb-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <h2 class="mb-0">⛺ 國中營現場即時管理系統 <span class="badge bg-success" id="syncStatus">連線中...</span></h2>
+        <div class="d-flex gap-2 align-items-center">
+            <span id="userRoleBadge" class="badge bg-secondary py-2 px-3 fw-bold" style="font-size:0.9rem;">👀 目前權限：僅供閱讀</span>
+            <button id="viewMsgBtn" class="btn btn-warning fw-bold shadow-sm d-none" data-bs-toggle="modal" data-bs-target="#msgModal" onclick="loadContactMessages()">✉️ 查看聯繫訊息</button>
+            <button id="authBtn" class="btn btn-dark fw-bold shadow-sm" onclick="handleAuthClick()">👤 管理者登入</button>
+        </div>
+    </div>
+    
     <div class="mb-3">
-        <h2 class="mb-3">⛺ 國中營現場即時管理系統 <span class="badge bg-success" id="syncStatus">連線中...</span></h2>
-        
         <div class="row g-3 align-items-center bg-white p-3 rounded shadow-sm border">
             <div class="col-md-2">
                 <label class="form-label fw-bold text-danger">📅 選擇年度</label>
@@ -270,7 +226,7 @@
             
             <div class="col-12 d-flex justify-content-between align-items-end mt-2 pt-2 border-top">
                 <div>
-                    <span class="text-primary d-block small mb-1 fw-bold">🔵 提示：名單內深藍色背景代表隊輔人員。</span>
+                    <span class="text-primary d-block small mb-1 fw-bold">🔵 提示：名單內深藍色背景代表隊輔人員。點擊下方文字框可展開閱讀完整內容。</span>
                     <span class="text-muted d-block small">修改右側「現場備註」輸入框後點擊旁邊即可即時同步存檔。</span>
                 </div>
                 <div>
@@ -319,20 +275,305 @@
     </div>
 </div>
 
+<!-- 🟢 聯繫管理者懸浮小工具 -->
+<div class="contact-widget">
+    <button class="btn btn-primary rounded-circle shadow-lg d-flex align-items-center justify-content-center" style="width: 55px; height: 55px; font-size: 1.5rem;" data-bs-toggle="modal" data-bs-target="#contactModal" title="發送訊息給管理者">💬</button>
+</div>
+
+<!-- 🟢 聯繫管理者 Modal 視窗 -->
+<div class="modal fade" id="contactModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title fw-bold">✉️ 聯繫管理者</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">發送人姓名 / 組別</label>
+                    <input type="text" id="contactSender" class="form-control" placeholder="例如：張大明 / 第3組小隊輔">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">回報內容</label>
+                    <textarea id="contactMessage" class="form-control" rows="4" placeholder="請輸入你想向管理者回報的任何事項或問題..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary fw-bold" onclick="sendContactMessage()">傳送訊息</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 🟢 雙重認證（Google + 帳號密碼） Modal 視窗 -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title fw-bold">🔑 系統權限認證</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pb-4">
+                
+                <!-- 選項 1：Google 快速登入 -->
+                <div class="d-grid gap-2 mb-3 mt-2">
+                    <button class="btn btn-outline-dark fw-bold d-flex align-items-center justify-content-center py-2" onclick="loginWithGoogle()">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" style="width: 20px; height: 20px; margin-right: 10px;">
+                        使用 Google 帳號登入
+                    </button>
+                </div>
+
+                <!-- 分隔線 -->
+                <div class="d-flex align-items-center mb-3">
+                    <hr class="flex-grow-1">
+                    <span class="mx-2 text-muted small fw-bold">或使用帳號密碼</span>
+                    <hr class="flex-grow-1">
+                </div>
+
+                <!-- 選項 2：帳號密碼登入 -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold small text-muted">電子信箱 (Email)</label>
+                    <input type="email" id="loginEmail" class="form-control" placeholder="請輸入信箱">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold small text-muted">密碼 (Password)</label>
+                    <input type="password" id="loginPassword" class="form-control" placeholder="請輸入密碼">
+                </div>
+                <div class="d-grid gap-2 mt-4">
+                    <button type="button" class="btn btn-success fw-bold" onclick="loginFirebase()">確認登入</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 🟢 管理者檢視聯絡訊息 Modal 視窗 -->
+<div class="modal fade" id="msgModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title fw-bold">✉️ 營隊現場回報訊息清單</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive" style="max-height: 450px; overflow-y: auto !important; padding: 0;">
+                    <table class="table table-striped table-hover align-middle mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>回報時間</th><th>發送人資訊</th><th>回報內容</th><th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="msgTableBody">
+                            <tr><td colspan="4" class="text-center text-muted">讀取中...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+    // 🔴 請確保這裡填入您 Firebase 完整的 Config 資訊，否則登入功能無法運作
     const firebaseConfig = {
+        apiKey: "請將您的_API_KEY_貼在這邊",
+        authDomain: "cijiguozhongkuailechengz-26e8d.firebaseapp.com",
+        projectId: "cijiguozhongkuailechengz-26e8d",
         databaseURL: "https://cijiguozhongkuailechengz-26e8d-default-rtdb.asia-southeast1.firebasedatabase.app/"
     };
     
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
+    
+    let auth = null;
+    try {
+        auth = firebase.auth();
+    } catch (e) {
+        console.warn("⚠️ Firebase Auth 初始化失敗，系統將暫時切換為唯讀模式。錯誤細節：", e);
+    }
 
+    let userRole = 'reader'; 
     let allCampData = {};    
     let currentYear = "";    
     let currentRole = 'campers'; 
+
+    if (auth) {
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                database.ref(`users/${user.uid}`).once('value').then((snapshot) => {
+                    const userData = snapshot.val();
+                    if (userData && userData.role) {
+                        userRole = userData.role;
+                    } else {
+                        userRole = 'reader'; 
+                    }
+                    const displayName = user.displayName || user.email;
+                    updateUIForRole(displayName);
+                    renderTable();
+                });
+            } else {
+                userRole = 'reader';
+                updateUIForRole(null);
+                renderTable();
+            }
+        });
+    } else {
+        userRole = 'reader';
+        updateUIForRole(null);
+    }
+
+    function updateUIForRole(name) {
+        const authBtn = document.getElementById('authBtn');
+        const roleBadge = document.getElementById('userRoleBadge');
+        const viewMsgBtn = document.getElementById('viewMsgBtn');
+
+        if (name) {
+            authBtn.innerText = "🔒 登出系統";
+            authBtn.className = "btn btn-danger fw-bold shadow-sm";
+            
+            if (userRole === 'admin') {
+                roleBadge.innerText = `👑 管理者：${name}`;
+                roleBadge.className = "badge bg-danger py-2 px-3 fw-bold";
+                viewMsgBtn.classList.remove('d-none'); 
+            } else if (userRole === 'renzhen') {
+                roleBadge.innerText = `🤝 人真組：${name}`;
+                roleBadge.className = "badge bg-success py-2 px-3 fw-bold";
+                viewMsgBtn.classList.add('d-none');
+            } else {
+                roleBadge.innerText = `👀 純閱讀：${name}`;
+                roleBadge.className = "badge bg-secondary py-2 px-3 fw-bold";
+                viewMsgBtn.classList.add('d-none');
+            }
+        } else {
+            authBtn.innerText = "👤 管理者登入";
+            authBtn.className = "btn btn-dark fw-bold shadow-sm";
+            roleBadge.innerText = "👀 目前權限：僅供閱讀";
+            roleBadge.className = "badge bg-secondary py-2 px-3 fw-bold";
+            viewMsgBtn.classList.add('d-none');
+        }
+    }
+
+    function handleAuthClick() {
+        if (!auth) {
+            alert("⚠️ 系統尚未設定完整的 Firebase 登入資訊 (缺少 apiKey)，目前僅供一般唯讀。請聯絡開發人員設定。");
+            return;
+        }
+
+        if (auth.currentUser) {
+            auth.signOut().then(() => {
+                alert("已成功登出系統，目前處於「唯讀模式」。");
+            });
+        } else {
+            const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+            loginModal.show();
+        }
+    }
+
+    function loginFirebase() {
+        if (!auth) return;
+        const email = document.getElementById('loginEmail').value.trim();
+        const pass = document.getElementById('loginPassword').value.trim();
+        
+        if (!email || !pass) {
+            alert("請填寫完整的信箱與密碼！");
+            return;
+        }
+
+        auth.signInWithEmailAndPassword(email, pass)
+            .then(() => {
+                const loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+                loginModal.hide();
+                document.getElementById('loginEmail').value = "";
+                document.getElementById('loginPassword').value = "";
+                alert("認證成功！已成功切換對應系統權限。");
+            })
+            .catch((error) => {
+                alert(`認證失敗：${error.message}`);
+            });
+    }
+
+    function loginWithGoogle() {
+        if (!auth) return;
+        const provider = new firebase.auth.GoogleAuthProvider();
+        auth.signInWithPopup(provider)
+            .then((result) => {
+                const loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+                loginModal.hide();
+                alert("Google 認證成功！已成功切換對應系統權限。");
+            })
+            .catch((error) => {
+                alert(`Google 認證失敗：${error.message}`);
+            });
+    }
+
+    function sendContactMessage() {
+        const sender = document.getElementById('contactSender').value.trim();
+        const message = document.getElementById('contactMessage').value.trim();
+
+        if (!sender || !message) {
+            alert("請輸入發送人姓名與內容！");
+            return;
+        }
+
+        const timestamp = new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' });
+        
+        database.ref('2026/contacts').push({
+            sender: sender,
+            message: message,
+            time: timestamp
+        }).then(() => {
+            alert("訊息傳送成功！管理員將會盡速收到回報。");
+            document.getElementById('contactSender').value = "";
+            document.getElementById('contactMessage').value = "";
+            const contactModal = bootstrap.Modal.getInstance(document.getElementById('contactModal'));
+            contactModal.hide();
+        }).catch((err) => {
+            alert("訊息傳送失敗，請確認網路或登入狀態！");
+        });
+    }
+
+    function loadContactMessages() {
+        const tableBody = document.getElementById('msgTableBody');
+        tableBody.innerHTML = `<tr><td colspan="4" class="text-center text-muted">正在載入最新訊息...</td></tr>`;
+
+        database.ref('2026/contacts').on('value', (snapshot) => {
+            const data = snapshot.val();
+            tableBody.innerHTML = "";
+            if (!data) {
+                tableBody.innerHTML = `<tr><td colspan="4" class="text-center text-muted p-4">目前沒有任何聯絡訊息。</td></tr>`;
+                return;
+            }
+
+            const keys = Object.keys(data).reverse();
+            keys.forEach(key => {
+                const item = data[key];
+                tableBody.innerHTML += `
+                    <tr>
+                        <td class="small font-monospace">${item.time}</td>
+                        <td class="fw-bold">${item.sender}</td>
+                        <td>${item.message}</td>
+                        <td><button class="btn btn-sm btn-outline-danger" onclick="deleteContactMsg('${key}')">刪除</button></td>
+                    </tr>
+                `;
+            });
+        });
+    }
+
+    function deleteContactMsg(key) {
+        if (confirm("確認要刪除這筆回報紀錄嗎？")) {
+            database.ref(`2026/contacts/${key}`).remove().then(() => {
+                alert("訊息已成功刪除。");
+            });
+        }
+    }
 
     database.ref('/').on('value', (snapshot) => {
         const data = snapshot.val();
@@ -484,6 +725,9 @@
             return;
         }
 
+        const isAdminUser = (userRole === 'admin');
+        const isRenzhenUser = (userRole === 'renzhen');
+
         if (currentRole === 'campers') {
             header.innerHTML = `
                 <tr>
@@ -510,18 +754,31 @@
                 let invoiceTdHtml = "";
                 let consentTdHtml = "";
 
+                // 💡 Checkbox 依然使用 disabled 來阻擋點擊
+                const checkinDisabled = !isAdminUser ? 'disabled' : '';
+                const invoiceDisabled = !isAdminUser ? 'disabled' : '';
+                const consentDisabled = !(isAdminUser || isRenzhenUser) ? 'disabled' : ''; 
+                
+                // 💡 文字框改用 readonly，讓使用者可以點開看但無法修改
+                const notesReadonly = !isAdminUser ? 'readonly' : '';
+                
+                // 💡 只有管理者修改後失焦，才會觸發存檔動作，節省網路資源
+                const checkinNoteBlur = isAdminUser ? `onblur="updateCloudField(${index}, '報到備註', this.value)"` : '';
+                const confirmBlur = isAdminUser ? `onblur="updateCloudField(${index}, '待確認事項', this.value)"` : '';
+                const liveNoteBlur = isAdminUser ? `onblur="updateCloudField(${index}, '備註', this.value)"` : '';
+
                 if (isAdvisor) {
                     checkinTdHtml = "";
                     invoiceTdHtml = "";
                     consentTdHtml = "";
                 } else {
-                    checkinTdHtml = `<input type="checkbox" class="form-check-input" ${item.報到 ? 'checked' : ''} onchange="updateCloudField(${index}, '報到', this.checked)">`;
-                    consentTdHtml = `<input type="checkbox" class="form-check-input" ${item.同意書 ? 'checked' : ''} onchange="updateCloudField(${index}, '同意書', this.checked)">`;
+                    checkinTdHtml = `<input type="checkbox" class="form-check-input" ${item.報到 ? 'checked' : ''} ${checkinDisabled} onchange="updateCloudField(${index}, '報到', this.checked)">`;
+                    consentTdHtml = `<input type="checkbox" class="form-check-input" ${item.同意書 ? 'checked' : ''} ${consentDisabled} onchange="updateCloudField(${index}, '同意書', this.checked)">`;
                     
                     if (item.繳費狀況 && (String(item.繳費狀況).trim() === "感恩戶" || String(item.繳費狀況).trim() === "師姑幫忙繳費")) {
                         invoiceTdHtml = `<span class="text-danger fw-bold" style="font-size: 1.2rem;">X</span>`;
                     } else {
-                        invoiceTdHtml = `<input type="checkbox" class="form-check-input" ${item.發票 ? 'checked' : ''} onchange="updateCloudField(${index}, '發票', this.checked)">`;
+                        invoiceTdHtml = `<input type="checkbox" class="form-check-input" ${item.發票 ? 'checked' : ''} ${invoiceDisabled} onchange="updateCloudField(${index}, '發票', this.checked)">`;
                     }
                 }
 
@@ -534,9 +791,9 @@
                     confirmHtml = "";
                     liveNoteHtml = "";
                 } else {
-                    checkinNoteHtml = `<textarea class="form-control form-control-sm border-success text-center input-expandable input-short-pop" onblur="updateCloudField(${index}, '報到備註', this.value)">${item.報到備註 || ''}</textarea>`;
-                    confirmHtml = `<textarea class="form-control form-control-sm border-success text-center input-expandable input-short-pop" onblur="updateCloudField(${index}, '待確認事項', this.value)">${item.待確認事項 || ''}</textarea>`;
-                    liveNoteHtml = `<textarea class="form-control form-control-sm border-primary input-expandable input-long-pop" onblur="updateCloudField(${index}, '備註', this.value)">${item.備註 || ''}</textarea>`;
+                    checkinNoteHtml = `<textarea class="form-control form-control-sm border-success text-center input-expandable input-short-pop" ${notesReadonly} ${checkinNoteBlur}>${item.報到備註 || ''}</textarea>`;
+                    confirmHtml = `<textarea class="form-control form-control-sm border-success text-center input-expandable input-short-pop" ${notesReadonly} ${confirmBlur}>${item.待確認事項 || ''}</textarea>`;
+                    liveNoteHtml = `<textarea class="form-control form-control-sm border-primary input-expandable input-long-pop" ${notesReadonly} ${liveNoteBlur}>${item.備註 || ''}</textarea>`;
                 }
 
                 tr.innerHTML = `
@@ -567,16 +824,21 @@
                 const nameStr = String(item.姓名 || '').toLowerCase();
                 if (nameSearchQuery && !nameStr.includes(nameSearchQuery)) return;
 
+                const checkinDisabled = !isAdminUser ? 'disabled' : '';
+                const notesReadonly = !isAdminUser ? 'readonly' : '';
+                const partNoteBlur = isAdminUser ? `onblur="updateCloudField(${index}, '全程參與', this.value)"` : '';
+                const liveNoteBlur = isAdminUser ? `onblur="updateCloudField(${index}, '備註', this.value)"` : '';
+
                 let tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td><input type="checkbox" class="form-check-input" ${item.報到 ? 'checked' : ''} onchange="updateCloudField(${index}, '報到', this.checked)"></td>
+                    <td><input type="checkbox" class="form-check-input" ${item.報到 ? 'checked' : ''} ${checkinDisabled} onchange="updateCloudField(${index}, '報到', this.checked)"></td>
                     <td>${item.組別 || ''}</td>
                     <td>${item.職務 || ''}</td>
                     <td class="fw-bold">${item.姓名 || ''}</td>
                     <td>${item.生理性別 || ''}</td>
                     <td>${item.身分別 || ''}</td>
-                    <td class="td-snug"><textarea class="form-control form-control-sm border-success text-center input-expandable input-part-pop" onblur="updateCloudField(${index}, '全程參與', this.value)">${item.全程參與 || ''}</textarea></td>
-                    <td class="td-snug"><textarea class="form-control form-control-sm border-primary input-expandable input-long-pop" onblur="updateCloudField(${index}, '備註', this.value)">${item.備註 || ''}</textarea></td>
+                    <td class="td-snug"><textarea class="form-control form-control-sm border-success text-center input-expandable input-part-pop" ${notesReadonly} ${partNoteBlur}>${item.全程參與 || ''}</textarea></td>
+                    <td class="td-snug"><textarea class="form-control form-control-sm border-primary input-expandable input-long-pop" ${notesReadonly} ${liveNoteBlur}>${item.備註 || ''}</textarea></td>
                 `;
                 body.appendChild(tr);
             });
