@@ -253,7 +253,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1 mb-1 fw-bold" style="font-size:0.75rem;">👥 營隊學員</span>
-                        <div class="fw-black text-dark h5 mb-0" id="camperGroupLabel" style="letter-spacing: 0.3px;">全體學員總計</div>
+                        <div class="fw-black text-dark h5 mb-0" id="camperGroupLabel" style="letter-spacing: 0.3px;">全體學員總計 (不含隊輔)</div>
                     </div>
                     <div class="text-end">
                         <span class="fs-4 fw-bold text-primary align-middle" id="camperStatsText">0 / 0</span>
@@ -267,7 +267,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 mb-1 fw-bold" style="font-size:0.75rem;">🛠️ 工作團隊</span>
-                        <div class="fw-black text-dark h5 mb-0" id="staffGroupLabel" style="letter-spacing: 0.3px;">全體工作人員總計</div>
+                        <div class="fw-black text-dark h5 mb-0" id="staffGroupLabel" style="letter-spacing: 0.3px;">全體工作團隊總計</div>
                     </div>
                     <div class="text-end">
                         <span class="fs-4 fw-bold text-success align-middle" id="staffStatsText">0 / 0</span>
@@ -283,6 +283,17 @@
             <thead class="table-dark" id="tableHeader"></thead>
             <tbody id="tableBody"></tbody>
         </table>
+    </div>
+</div>
+
+<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1080;">
+    <div id="adminNotifyToast" class="toast align-items-center text-bg-danger border-0 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body fw-bold text-white fs-6" id="adminNotifyToastBody">
+                🔔 收到一則新的現場回報訊息！
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
     </div>
 </div>
 
@@ -309,7 +320,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary fw-bold" onclick="sendContactMessage()">傳送訊息</button>
+                <button type="button" class="btn btn-primary fw-bold" id="sendMsgBtn" onclick="sendContactMessage()">傳送訊息</button>
             </div>
         </div>
     </div>
@@ -383,7 +394,7 @@
                 <button type="button" class="btn-close" id="groupStatsModalCloseBtn" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-0">
-                <table class="table table-striped table-hover align-middle mb-0 text-center">
+                <table class="table table-striped table-hover align-middle mb-0 text-center" style="table-layout: fixed;">
                     <thead class="table-dark">
                         <tr>
                             <th>組別</th>
@@ -406,9 +417,18 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+    (function() {
+        // ⚠️ 請填入您的 EmailJS Public Key (公開金鑰)
+        emailjs.init("T5jUhJh3JQT2a7kUr");
+    })();
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+    // ⚠️ 記得替換您的 apiKey!
     const firebaseConfig = {
         apiKey: "AIzaSyAIMqhpPWrjUE_SDfLXKLt7B4ryn8G4G1U",
         authDomain: "cijiguozhongkuailechengz-26e8d.firebaseapp.com",
@@ -430,7 +450,10 @@
     let allCampData = {};    
     let currentYear = "";    
     let currentRole = 'campers'; 
-    let currentGroupOrder = []; // 💡 用來儲存下拉選單的組別順序
+    let currentGroupOrder = [];
+
+    let lastMsgCount = -1;
+    let adminMsgListenerRef = null;
 
     if (auth) {
         auth.onAuthStateChanged((user) => {
@@ -472,16 +495,19 @@
                 roleBadge.className = "badge bg-danger py-2 px-3 fw-bold";
                 viewMsgBtn.classList.remove('d-none'); 
                 if(adminHint) adminHint.classList.remove('d-none'); 
+                startAdminMessageListener(); 
             } else if (userRole === 'renzhen') {
                 roleBadge.innerText = `🤝 人真組：${name}`;
                 roleBadge.className = "badge bg-success py-2 px-3 fw-bold";
                 viewMsgBtn.classList.add('d-none');
                 if(adminHint) adminHint.classList.add('d-none'); 
+                stopAdminMessageListener();
             } else {
                 roleBadge.innerText = `👀 純閱讀：${name}`;
                 roleBadge.className = "badge bg-secondary py-2 px-3 fw-bold";
                 viewMsgBtn.classList.add('d-none');
                 if(adminHint) adminHint.classList.add('d-none'); 
+                stopAdminMessageListener();
             }
         } else {
             authBtn.innerText = "👤 管理者登入";
@@ -490,12 +516,51 @@
             roleBadge.className = "badge bg-secondary py-2 px-3 fw-bold";
             viewMsgBtn.classList.add('d-none');
             if(adminHint) adminHint.classList.add('d-none'); 
+            stopAdminMessageListener();
+        }
+    }
+
+    function startAdminMessageListener() {
+        if (adminMsgListenerRef) return; 
+        
+        adminMsgListenerRef = database.ref('2026/contacts');
+        adminMsgListenerRef.on('value', (snapshot) => {
+            if (userRole !== 'admin') return; 
+
+            const data = snapshot.val();
+            const currentCount = data ? Object.keys(data).length : 0;
+            const viewMsgBtn = document.getElementById('viewMsgBtn');
+            
+            if (currentCount > 0) {
+                viewMsgBtn.innerHTML = `✉️ 查看聯繫訊息 <span class="badge bg-danger rounded-pill shadow-sm ms-1 border border-light">${currentCount}</span>`;
+                viewMsgBtn.className = "btn btn-danger fw-bold shadow-sm"; 
+            } else {
+                viewMsgBtn.innerHTML = `✉️ 查看聯繫訊息`;
+                viewMsgBtn.className = "btn btn-warning fw-bold shadow-sm"; 
+            }
+
+            if (lastMsgCount !== -1 && currentCount > lastMsgCount) {
+                const toastEl = document.getElementById('adminNotifyToast');
+                if (toastEl) {
+                    const toast = new bootstrap.Toast(toastEl, { delay: 6000 });
+                    toast.show();
+                }
+            }
+            lastMsgCount = currentCount;
+        });
+    }
+
+    function stopAdminMessageListener() {
+        if (adminMsgListenerRef) {
+            adminMsgListenerRef.off();
+            adminMsgListenerRef = null;
+            lastMsgCount = -1;
         }
     }
 
     function handleAuthClick() {
         if (!auth) {
-            alert("⚠️ 系統尚未設定完整的 Firebase 登入資訊 (缺少 apiKey)，目前僅供一般唯讀。請聯絡開發人員設定。");
+            alert("⚠️ 系統尚未設定完整的 Firebase 登入資訊，目前僅供一般唯讀。");
             return;
         }
 
@@ -549,34 +614,67 @@
     function sendContactMessage() {
         const sender = document.getElementById('contactSender').value.trim();
         const message = document.getElementById('contactMessage').value.trim();
+        const sendBtn = document.getElementById('sendMsgBtn');
 
         if (!sender || !message) {
             alert("請輸入發送人姓名與內容！");
             return;
         }
 
+        // 鎖定按鈕，防止重複點擊
+        const originalBtnText = sendBtn.innerText;
+        sendBtn.innerText = "🔄 傳送中...";
+        sendBtn.disabled = true;
+
         const timestamp = new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' });
         
+        // 1. 將訊息存入 Firebase 資料庫
         database.ref('2026/contacts').push({
             sender: sender,
             message: message,
             time: timestamp
         }).then(() => {
-            alert("訊息傳送成功！管理員將會盡速收到回報。");
+            
+            // 2. 觸發 EmailJS 寄送信件
+            // ⚠️ 請填入您的 EmailJS Service ID 與 Template ID
+            const templateParams = {
+                sender_name: sender,
+                message: message,
+                time: timestamp
+            };
+
+            emailjs.send('service_y29h6kp', 'template_fcmv6p8', templateParams)
+                .then(function(response) {
+                    console.log('EmailJS 發送成功!', response.status, response.text);
+                    alert("✅ 訊息傳送成功！管理員已收到 Email 信件通知。");
+                    resetContactForm();
+                }, function(error) {
+                    console.error('EmailJS 發送失敗...', error);
+                    alert("⚠️ 訊息已存入資料庫，但 Email 通知發送失敗。請聯繫開發人員確認 EmailJS 設定。");
+                    resetContactForm();
+                });
+
+        }).catch((err) => {
+            alert("❌ 訊息傳送失敗，請確認 Firebase 安全規則設定是否已開放寫入權限。");
+            sendBtn.innerText = originalBtnText;
+            sendBtn.disabled = false;
+        });
+
+        function resetContactForm() {
             document.getElementById('contactSender').value = "";
             document.getElementById('contactMessage').value = "";
             const contactModal = bootstrap.Modal.getInstance(document.getElementById('contactModal'));
             contactModal.hide();
-        }).catch((err) => {
-            alert("訊息傳送失敗，請確認 Firebase 安全規則設定是否已開放寫入權限。");
-        });
+            sendBtn.innerText = originalBtnText;
+            sendBtn.disabled = false;
+        }
     }
 
     function loadContactMessages() {
         const tableBody = document.getElementById('msgTableBody');
         tableBody.innerHTML = `<tr><td colspan="4" class="text-center text-muted">正在載入最新訊息...</td></tr>`;
 
-        database.ref('2026/contacts').on('value', (snapshot) => {
+        database.ref('2026/contacts').once('value', (snapshot) => {
             const data = snapshot.val();
             tableBody.innerHTML = "";
             if (!data) {
@@ -603,6 +701,7 @@
         if (confirm("確認要刪除這筆回報紀錄嗎？")) {
             database.ref(`2026/contacts/${key}`).remove().then(() => {
                 alert("訊息已成功刪除。");
+                loadContactMessages(); 
             });
         }
     }
@@ -661,11 +760,11 @@
         const groups = [...new Set(list.map(item => String(item.組別 || '')).filter(g => g))];
         
         filterSelect.innerHTML = '<option value="全部">全部組別</option>';
-        currentGroupOrder = []; // 💡 清空並重新儲存順序
+        currentGroupOrder = []; 
         
         groups.forEach(g => {
             filterSelect.innerHTML += `<option value="${g}">${g}</option>`;
-            currentGroupOrder.push(g); // 💡 將原本資料庫抓出來的順序存起來
+            currentGroupOrder.push(g); 
         });
         
         if (groups.includes(currentSelected)) filterSelect.value = currentSelected;
@@ -710,8 +809,8 @@
         } else {
             cBox.className = "card p-3 shadow-sm stats-box inactive-box";
             sBox.className = "card p-3 shadow-sm stats-box active-staff";
-            document.getElementById('camperGroupLabel').innerText = "全體學員 (不含隊輔)";
-            document.getElementById('staffGroupLabel').innerText = selectedGroup === "全部" ? "全體工作人員總計" : `工作人員 ｜ ${selectedGroup}`;
+            document.getElementById('camperGroupLabel').innerText = "全體學員總計 (不含隊輔)";
+            document.getElementById('staffGroupLabel').innerText = selectedGroup === "全部" ? "全體工作團隊總計" : `工作人員 ｜ ${selectedGroup}`;
         }
     }
 
@@ -729,16 +828,11 @@
             return;
         }
 
-        // 💡 修改排序邏輯：完全依照下拉選單 currentGroupOrder 的順序
-        // 但因為學員與工作人員的下拉選單可能不同，所以先抓取該 role 實際存在的組別，
-        // 再使用 indexOf 來對照原本生成的順序。
         const rawGroups = [...new Set(list.map(item => String(item.組別 || '')).filter(g => g))];
         const groups = rawGroups.sort((a, b) => {
-            // 如果是目前的 currentRole，直接對照下拉選單順序
             if (targetRole === currentRole && currentGroupOrder.length > 0) {
                  return currentGroupOrder.indexOf(a) - currentGroupOrder.indexOf(b);
             }
-            // 如果切換了 role（例如目前在學員畫面，但點擊了工作團隊框框），則退回原本的數字排序作為備案
             const numA = parseInt(a.replace(/\D/g, ''));
             const numB = parseInt(b.replace(/\D/g, ''));
             if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
