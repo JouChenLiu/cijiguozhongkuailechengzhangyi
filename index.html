@@ -759,7 +759,8 @@
         
         const groups = [...new Set(list.map(item => String(item.組別 || '')).filter(g => g))];
         
-        filterSelect.innerHTML = '<option value="全部">全部組別</option>';
+        // 💡 增加「尚未報到」的選項
+        filterSelect.innerHTML = '<option value="全部">全部組別</option><option value="尚未報到">⚠️ 尚未報到</option>';
         currentGroupOrder = []; 
         
         groups.forEach(g => {
@@ -767,7 +768,10 @@
             currentGroupOrder.push(g); 
         });
         
-        if (groups.includes(currentSelected)) filterSelect.value = currentSelected;
+        // 確保切換時能保留「尚未報到」的選擇狀態
+        if (groups.includes(currentSelected) || currentSelected === "尚未報到") {
+            filterSelect.value = currentSelected;
+        }
     }
 
     function updateCloudField(index, field, value) {
@@ -777,6 +781,8 @@
 
     function calculateLiveStats() {
         const selectedGroup = document.getElementById('groupFilter').value;
+        const effectiveGroup = selectedGroup === "尚未報到" ? "全部" : selectedGroup;
+        
         const yearData = allCampData[currentYear] || {};
         const campersList = yearData['campers'] || [];
         const staffList = yearData['staff'] || [];
@@ -784,18 +790,27 @@
         let camperChecked = 0, camperTotal = 0;
         let staffChecked = 0, staffTotal = 0;
 
-        camperChecked = campersList.filter(i => !String(i.身分||'').includes("隊輔") && !String(i.身分||'').includes("工作人員") && (selectedGroup === "全部" || String(i.組別||'') === selectedGroup) && i.報到).length;
-        camperTotal = campersList.filter(i => !String(i.身分||'').includes("隊輔") && !String(i.身分||'').includes("工作人員") && (selectedGroup === "全部" || String(i.組別||'') === selectedGroup)).length;
+        camperChecked = campersList.filter(i => !String(i.身分||'').includes("隊輔") && !String(i.身分||'').includes("工作人員") && (effectiveGroup === "全部" || String(i.組別||'') === effectiveGroup) && i.報到).length;
+        camperTotal = campersList.filter(i => !String(i.身分||'').includes("隊輔") && !String(i.身分||'').includes("工作人員") && (effectiveGroup === "全部" || String(i.組別||'') === effectiveGroup)).length;
         
-        staffChecked = staffList.filter(i => (selectedGroup === "全部" || String(i.組別||'') === selectedGroup) && i.報到).length;
-        staffTotal = staffList.filter(i => selectedGroup === "全部" || String(i.組別||'') === selectedGroup).length;
+        staffChecked = staffList.filter(i => (effectiveGroup === "全部" || String(i.組別||'') === effectiveGroup) && i.報到).length;
+        staffTotal = staffList.filter(i => effectiveGroup === "全部" || String(i.組別||'') === effectiveGroup).length;
 
-        const camperPercent = camperTotal > 0 ? Math.round((camperChecked / camperTotal) * 100) : 0;
-        const staffPercent = staffTotal > 0 ? Math.round((staffChecked / staffTotal) * 100) : 0;
+        // 💡 判斷目前的篩選狀態，決定顯示「已報到」還是「未報到」的人數
+        let displayCamperCount = camperChecked;
+        let displayStaffCount = staffChecked;
 
-        document.getElementById('camperStatsText').innerText = `${camperChecked} / ${camperTotal}`;
+        if (selectedGroup === "尚未報到") {
+            displayCamperCount = camperTotal - camperChecked;
+            displayStaffCount = staffTotal - staffChecked;
+        }
+
+        const camperPercent = camperTotal > 0 ? Math.round((displayCamperCount / camperTotal) * 100) : 0;
+        const staffPercent = staffTotal > 0 ? Math.round((displayStaffCount / staffTotal) * 100) : 0;
+
+        document.getElementById('camperStatsText').innerText = `${displayCamperCount} / ${camperTotal}`;
         document.getElementById('camperStatsPercent').innerText = `${camperPercent}%`;
-        document.getElementById('staffStatsText').innerText = `${staffChecked} / ${staffTotal}`;
+        document.getElementById('staffStatsText').innerText = `${displayStaffCount} / ${staffTotal}`;
         document.getElementById('staffStatsPercent').innerText = `${staffPercent}%`;
 
         const cBox = document.getElementById('camperStatsBox');
@@ -804,13 +819,23 @@
         if (currentRole === 'campers') {
             cBox.className = "card p-3 shadow-sm stats-box active-camper";
             sBox.className = "card p-3 shadow-sm stats-box inactive-box";
-            document.getElementById('camperGroupLabel').innerText = selectedGroup === "全部" ? "全體學員總計 (不含隊輔)" : `學員 ｜ 第 ${selectedGroup} 組`;
+            
+            if (selectedGroup === "尚未報到") {
+                document.getElementById('camperGroupLabel').innerText = "尚未報到學員 (不含隊輔)";
+            } else {
+                document.getElementById('camperGroupLabel').innerText = effectiveGroup === "全部" ? "全體學員總計 (不含隊輔)" : `學員 ｜ 第 ${effectiveGroup} 組`;
+            }
             document.getElementById('staffGroupLabel').innerText = "全體工作團隊總計"; 
         } else {
             cBox.className = "card p-3 shadow-sm stats-box inactive-box";
             sBox.className = "card p-3 shadow-sm stats-box active-staff";
             document.getElementById('camperGroupLabel').innerText = "全體學員總計 (不含隊輔)";
-            document.getElementById('staffGroupLabel').innerText = selectedGroup === "全部" ? "全體工作團隊總計" : `工作人員 ｜ ${selectedGroup}`;
+            
+            if (selectedGroup === "尚未報到") {
+                document.getElementById('staffGroupLabel').innerText = "尚未報到工作人員";
+            } else {
+                document.getElementById('staffGroupLabel').innerText = effectiveGroup === "全部" ? "全體工作團隊總計" : `工作人員 ｜ ${effectiveGroup}`;
+            }
         }
     }
 
@@ -979,13 +1004,19 @@
                 </tr>`;
             
             list.forEach((item, index) => {
-                if (selectedGroup !== "全部" && String(item.組別 || '') !== selectedGroup) return;
+                const identityStr = String(item.身分 || '');
+                const isAdvisor = identityStr.includes("隊輔") || identityStr.includes("工作人員");
+
+                // 💡 修正後的「尚未報到」過濾邏輯
+                if (selectedGroup === "尚未報到") {
+                    if (item.報到) return;       // 已報到者不顯示
+                    if (isAdvisor) return;       // 是隊輔也不顯示
+                } else if (selectedGroup !== "全部" && String(item.組別 || '') !== selectedGroup) {
+                    return;
+                }
                 
                 const nameStr = String(item.姓名 || '').toLowerCase();
                 if (nameSearchQuery && !nameStr.includes(nameSearchQuery)) return;
-
-                const identityStr = String(item.身分 || '');
-                const isAdvisor = identityStr.includes("隊輔") || identityStr.includes("工作人員");
                 
                 let tr = document.createElement('tr');
                 if (isAdvisor) tr.className = "advisor-row";
@@ -1056,7 +1087,11 @@
                 </tr>`;
             
             list.forEach((item, index) => {
-                if (selectedGroup !== "全部" && String(item.組別 || '') !== selectedGroup) return;
+                if (selectedGroup === "尚未報到") {
+                    if (item.報到) return; 
+                } else if (selectedGroup !== "全部" && String(item.組別 || '') !== selectedGroup) {
+                    return;
+                }
                 
                 const nameStr = String(item.姓名 || '').toLowerCase();
                 if (nameSearchQuery && !nameStr.includes(nameSearchQuery)) return;
