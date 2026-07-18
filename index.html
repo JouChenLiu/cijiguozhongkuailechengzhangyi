@@ -48,6 +48,10 @@
             border-radius: 14px !important;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             background-color: #ffffff;
+            cursor: pointer; 
+        }
+        .stats-box:hover {
+            filter: brightness(0.97);
         }
         
         .active-camper {
@@ -105,7 +109,6 @@
             padding: 8px 6px !important; 
         }
 
-        /* 💡 文字框基礎樣式修正 */
         .input-expandable {
             height: 31px;
             min-height: 31px;
@@ -117,7 +120,6 @@
             transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
         }
         
-        /* 💡 將原本的 disabled 樣式分離，針對 readonly 加入提示可以點擊的視覺引導 */
         .input-expandable:disabled, 
         .input-expandable[readonly] {
             background-color: #f8f9fa !important;
@@ -128,10 +130,9 @@
             cursor: not-allowed;
         }
         .input-expandable[readonly] {
-            cursor: pointer; /* 提示使用者可以點擊展開閱讀 */
+            cursor: pointer; 
         }
         
-        /* 🟢 學員：「報到備註」、「待確認事項」Pop 機制 */
         .input-short-pop { width: 100%; margin: 0 auto; }
         .input-short-pop:focus:not(:disabled) {
             position: absolute; right: 0 !important; left: auto !important; width: 100% !important;        
@@ -142,7 +143,6 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important; cursor: text;
         }
 
-        /* 🟢 工作人員：「全程參與」彈跳機制 */
         .input-part-pop { width: 100%; margin: 0 auto; }
         .input-part-pop:focus:not(:disabled) {
             position: absolute; right: 0 !important; left: auto !important; width: 100% !important;        
@@ -153,7 +153,6 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important; cursor: text;
         }
 
-        /* 🔵 右側「現場備註」大文字框專用 Pop 機制 */
         .input-long-pop { width: 100%; }
         .input-long-pop:focus:not(:disabled) {
             position: absolute; right: 0 !important; left: auto !important; width: 100% !important;        
@@ -164,18 +163,30 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18) !important; cursor: text;
         }
 
-        /* 💡 唯讀模式下點擊展開的專屬視覺回饋 (低調灰) */
         .input-expandable[readonly]:focus {
             border-color: #cbd5e1 !important;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
         }
 
-        /* 聯繫功能懸浮按鈕 */
         .contact-widget {
             position: fixed;
             bottom: 25px;
             right: 25px;
             z-index: 1050;
+        }
+
+        .premium-blue-header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important;
+            color: #ffffff !important;
+            border-bottom: none;
+        }
+        .premium-green-header {
+            background: linear-gradient(135deg, #0f5132 0%, #198754 100%) !important;
+            color: #ffffff !important;
+            border-bottom: none;
+        }
+        .premium-blue-header .modal-title, .premium-green-header .modal-title {
+            color: #ffffff !important;
         }
     </style>
 </head>
@@ -226,8 +237,8 @@
             
             <div class="col-12 d-flex justify-content-between align-items-end mt-2 pt-2 border-top">
                 <div>
-                    <span class="text-primary d-block small mb-1 fw-bold">🔵 提示：名單內深藍色背景代表隊輔人員。點擊下方文字框可展開閱讀完整內容。</span>
-                    <span class="text-muted d-block small">修改右側「現場備註」輸入框後點擊旁邊即可即時同步存檔。</span>
+                    <span class="text-primary d-block small mb-1 fw-bold">🔵 提示：點選下方「全體學員」或「全體工作團隊」的總計框，可快速查看各組詳細人數。點擊下方文字框可展開閱讀完整內容。</span>
+                    <span id="adminHintText" class="text-muted d-block small d-none">修改文字輸入框後點擊旁邊即可即時同步存檔。</span>
                 </div>
                 <div>
                     <button class="btn btn-sm btn-warning fw-bold" onclick="location.reload()">🔄 強制整理全站</button>
@@ -238,7 +249,7 @@
 
     <div class="row g-3 mb-4">
         <div class="col-12 col-md-6">
-            <div class="card p-3 shadow-sm stats-box" id="camperStatsBox">
+            <div class="card p-3 shadow-sm stats-box" id="camperStatsBox" onclick="showGroupStats('campers')" title="點擊查看各組詳細報到人數">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1 mb-1 fw-bold" style="font-size:0.75rem;">👥 營隊學員</span>
@@ -252,7 +263,7 @@
             </div>
         </div>
         <div class="col-12 col-md-6">
-            <div class="card p-3 shadow-sm stats-box" id="staffStatsBox">
+            <div class="card p-3 shadow-sm stats-box" id="staffStatsBox" onclick="showGroupStats('staff')" title="點擊查看各組詳細報到人數">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 mb-1 fw-bold" style="font-size:0.75rem;">🛠️ 工作團隊</span>
@@ -275,12 +286,10 @@
     </div>
 </div>
 
-<!-- 🟢 聯繫管理者懸浮小工具 -->
 <div class="contact-widget">
     <button class="btn btn-primary rounded-circle shadow-lg d-flex align-items-center justify-content-center" style="width: 55px; height: 55px; font-size: 1.5rem;" data-bs-toggle="modal" data-bs-target="#contactModal" title="發送訊息給管理者">💬</button>
 </div>
 
-<!-- 🟢 聯繫管理者 Modal 視窗 -->
 <div class="modal fade" id="contactModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -306,7 +315,6 @@
     </div>
 </div>
 
-<!-- 🟢 雙重認證（Google + 帳號密碼） Modal 視窗 -->
 <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content">
@@ -315,23 +323,17 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body pb-4">
-                
-                <!-- 選項 1：Google 快速登入 -->
                 <div class="d-grid gap-2 mb-3 mt-2">
                     <button class="btn btn-outline-dark fw-bold d-flex align-items-center justify-content-center py-2" onclick="loginWithGoogle()">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" style="width: 20px; height: 20px; margin-right: 10px;">
                         使用 Google 帳號登入
                     </button>
                 </div>
-
-                <!-- 分隔線 -->
                 <div class="d-flex align-items-center mb-3">
                     <hr class="flex-grow-1">
                     <span class="mx-2 text-muted small fw-bold">或使用帳號密碼</span>
                     <hr class="flex-grow-1">
                 </div>
-
-                <!-- 選項 2：帳號密碼登入 -->
                 <div class="mb-3">
                     <label class="form-label fw-bold small text-muted">電子信箱 (Email)</label>
                     <input type="email" id="loginEmail" class="form-control" placeholder="請輸入信箱">
@@ -343,13 +345,11 @@
                 <div class="d-grid gap-2 mt-4">
                     <button type="button" class="btn btn-success fw-bold" onclick="loginFirebase()">確認登入</button>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
 
-<!-- 🟢 管理者檢視聯絡訊息 Modal 視窗 -->
 <div class="modal fade" id="msgModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
@@ -375,6 +375,33 @@
     </div>
 </div>
 
+<div class="modal fade" id="groupStatsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header" id="groupStatsModalHeader">
+                <h5 class="modal-title fw-bold text-white" id="groupStatsModalTitle">📊 各組報到統計</h5>
+                <button type="button" class="btn-close" id="groupStatsModalCloseBtn" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <table class="table table-striped table-hover align-middle mb-0 text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>組別</th>
+                            <th>男生</th>
+                            <th>女生</th>
+                            <th>已報到</th>
+                            <th>總人數</th>
+                            <th>報到率</th>
+                        </tr>
+                    </thead>
+                    <tbody id="groupStatsTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
@@ -382,7 +409,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    // 🔴 請確保這裡填入您 Firebase 完整的 Config 資訊，否則登入功能無法運作
     const firebaseConfig = {
         apiKey: "AIzaSyAIMqhpPWrjUE_SDfLXKLt7B4ryn8G4G1U",
         authDomain: "cijiguozhongkuailechengz-26e8d.firebaseapp.com",
@@ -404,6 +430,7 @@
     let allCampData = {};    
     let currentYear = "";    
     let currentRole = 'campers'; 
+    let currentGroupOrder = []; // 💡 用來儲存下拉選單的組別順序
 
     if (auth) {
         auth.onAuthStateChanged((user) => {
@@ -434,6 +461,7 @@
         const authBtn = document.getElementById('authBtn');
         const roleBadge = document.getElementById('userRoleBadge');
         const viewMsgBtn = document.getElementById('viewMsgBtn');
+        const adminHint = document.getElementById('adminHintText'); 
 
         if (name) {
             authBtn.innerText = "🔒 登出系統";
@@ -443,14 +471,17 @@
                 roleBadge.innerText = `👑 管理者：${name}`;
                 roleBadge.className = "badge bg-danger py-2 px-3 fw-bold";
                 viewMsgBtn.classList.remove('d-none'); 
+                if(adminHint) adminHint.classList.remove('d-none'); 
             } else if (userRole === 'renzhen') {
                 roleBadge.innerText = `🤝 人真組：${name}`;
                 roleBadge.className = "badge bg-success py-2 px-3 fw-bold";
                 viewMsgBtn.classList.add('d-none');
+                if(adminHint) adminHint.classList.add('d-none'); 
             } else {
                 roleBadge.innerText = `👀 純閱讀：${name}`;
                 roleBadge.className = "badge bg-secondary py-2 px-3 fw-bold";
                 viewMsgBtn.classList.add('d-none');
+                if(adminHint) adminHint.classList.add('d-none'); 
             }
         } else {
             authBtn.innerText = "👤 管理者登入";
@@ -458,6 +489,7 @@
             roleBadge.innerText = "👀 目前權限：僅供閱讀";
             roleBadge.className = "badge bg-secondary py-2 px-3 fw-bold";
             viewMsgBtn.classList.add('d-none');
+            if(adminHint) adminHint.classList.add('d-none'); 
         }
     }
 
@@ -525,7 +557,6 @@
 
         const timestamp = new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' });
         
-        // 💡 移除登入狀態檢查，直接執行寫入
         database.ref('2026/contacts').push({
             sender: sender,
             message: message,
@@ -537,7 +568,6 @@
             const contactModal = bootstrap.Modal.getInstance(document.getElementById('contactModal'));
             contactModal.hide();
         }).catch((err) => {
-            // 💡 若這裡跳出錯誤，通常是因為 Firebase Rules 尚未更新成 true
             alert("訊息傳送失敗，請確認 Firebase 安全規則設定是否已開放寫入權限。");
         });
     }
@@ -598,7 +628,6 @@
 
     function updateYearFilter() {
         const yearSelect = document.getElementById('yearFilter');
-        // 💡 修正：過濾掉 'users' 節點，確保下拉選單只有真正的年度數字
         const years = Object.keys(allCampData).filter(key => key !== 'users').sort().reverse();
         
         if (years.length === 0) return;
@@ -632,8 +661,11 @@
         const groups = [...new Set(list.map(item => String(item.組別 || '')).filter(g => g))];
         
         filterSelect.innerHTML = '<option value="全部">全部組別</option>';
+        currentGroupOrder = []; // 💡 清空並重新儲存順序
+        
         groups.forEach(g => {
             filterSelect.innerHTML += `<option value="${g}">${g}</option>`;
+            currentGroupOrder.push(g); // 💡 將原本資料庫抓出來的順序存起來
         });
         
         if (groups.includes(currentSelected)) filterSelect.value = currentSelected;
@@ -674,13 +706,123 @@
             cBox.className = "card p-3 shadow-sm stats-box active-camper";
             sBox.className = "card p-3 shadow-sm stats-box inactive-box";
             document.getElementById('camperGroupLabel').innerText = selectedGroup === "全部" ? "全體學員總計 (不含隊輔)" : `學員 ｜ 第 ${selectedGroup} 組`;
-            document.getElementById('staffGroupLabel').innerText = "全體工作團隊";
+            document.getElementById('staffGroupLabel').innerText = "全體工作團隊總計"; 
         } else {
             cBox.className = "card p-3 shadow-sm stats-box inactive-box";
             sBox.className = "card p-3 shadow-sm stats-box active-staff";
             document.getElementById('camperGroupLabel').innerText = "全體學員 (不含隊輔)";
             document.getElementById('staffGroupLabel').innerText = selectedGroup === "全部" ? "全體工作人員總計" : `工作人員 ｜ ${selectedGroup}`;
         }
+    }
+
+    function showGroupStats(targetRole) {
+        if (!currentYear || !allCampData[currentYear]) {
+            alert("目前尚無資料可供統計！");
+            return;
+        }
+
+        const yearData = allCampData[currentYear];
+        const list = yearData[targetRole] || [];
+        
+        if (list.length === 0) {
+            alert("該類別目前無資料！");
+            return;
+        }
+
+        // 💡 修改排序邏輯：完全依照下拉選單 currentGroupOrder 的順序
+        // 但因為學員與工作人員的下拉選單可能不同，所以先抓取該 role 實際存在的組別，
+        // 再使用 indexOf 來對照原本生成的順序。
+        const rawGroups = [...new Set(list.map(item => String(item.組別 || '')).filter(g => g))];
+        const groups = rawGroups.sort((a, b) => {
+            // 如果是目前的 currentRole，直接對照下拉選單順序
+            if (targetRole === currentRole && currentGroupOrder.length > 0) {
+                 return currentGroupOrder.indexOf(a) - currentGroupOrder.indexOf(b);
+            }
+            // 如果切換了 role（例如目前在學員畫面，但點擊了工作團隊框框），則退回原本的數字排序作為備案
+            const numA = parseInt(a.replace(/\D/g, ''));
+            const numB = parseInt(b.replace(/\D/g, ''));
+            if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
+            return a.localeCompare(b, 'zh-TW');
+        });
+
+        const tableBody = document.getElementById('groupStatsTableBody');
+        tableBody.innerHTML = "";
+        
+        let grandTotal = 0;
+        let grandChecked = 0;
+        let grandMale = 0;
+        let grandFemale = 0;
+
+        groups.forEach(g => {
+            let groupItems = [];
+            if (targetRole === 'campers') {
+                groupItems = list.filter(i => String(i.組別 || '') === g && !String(i.身分||'').includes("隊輔") && !String(i.身分||'').includes("工作人員"));
+            } else {
+                groupItems = list.filter(i => String(i.組別 || '') === g);
+            }
+
+            const total = groupItems.length;
+            const checked = groupItems.filter(i => i.報到).length;
+            
+            let maleCount = 0;
+            let femaleCount = 0;
+            if (targetRole === 'campers') {
+                maleCount = groupItems.filter(i => i.報到 && String(i.性別 || '').includes('男')).length;
+                femaleCount = groupItems.filter(i => i.報到 && String(i.性別 || '').includes('女')).length;
+            } else {
+                maleCount = groupItems.filter(i => i.報到 && String(i.生理性別 || '').includes('男')).length;
+                femaleCount = groupItems.filter(i => i.報到 && String(i.生理性別 || '').includes('女')).length;
+            }
+
+            if (total > 0) {
+                grandTotal += total;
+                grandChecked += checked;
+                grandMale += maleCount;
+                grandFemale += femaleCount;
+                
+                const percent = Math.round((checked / total) * 100);
+                
+                tableBody.innerHTML += `
+                    <tr>
+                        <td class="fw-bold">${g}</td>
+                        <td class="text-primary fw-semibold">${maleCount}</td>
+                        <td class="text-danger fw-semibold">${femaleCount}</td>
+                        <td class="text-success fw-bold">${checked}</td>
+                        <td>${total}</td>
+                        <td><span class="badge bg-${percent === 100 ? 'success' : (percent > 0 ? 'primary' : 'secondary')}">${percent}%</span></td>
+                    </tr>
+                `;
+            }
+        });
+
+        const grandPercent = grandTotal > 0 ? Math.round((grandChecked / grandTotal) * 100) : 0;
+        tableBody.innerHTML += `
+            <tr class="table-secondary fw-bold" style="border-top: 2px solid #333;">
+                <td>總計</td>
+                <td class="text-primary">${grandMale}</td>
+                <td class="text-danger">${grandFemale}</td>
+                <td class="text-success">${grandChecked}</td>
+                <td>${grandTotal}</td>
+                <td><span class="badge bg-danger">${grandPercent}%</span></td>
+            </tr>
+        `;
+
+        const titleElement = document.getElementById('groupStatsModalTitle');
+        const headerElement = document.getElementById('groupStatsModalHeader');
+        const closeBtn = document.getElementById('groupStatsModalCloseBtn');
+
+        if (targetRole === 'campers') {
+            titleElement.innerText = "📊 學員各組報到與性別統計 (不含隊輔)";
+            headerElement.className = "modal-header premium-blue-header"; 
+            closeBtn.className = "btn-close btn-close-white";
+        } else {
+            titleElement.innerText = "📊 工作團隊各組報到與性別統計";
+            headerElement.className = "modal-header premium-green-header"; 
+            closeBtn.className = "btn-close btn-close-white";
+        }
+
+        const modal = new bootstrap.Modal(document.getElementById('groupStatsModal'));
+        modal.show();
     }
 
     function handleNameSearch() {
@@ -758,15 +900,12 @@
                 let invoiceTdHtml = "";
                 let consentTdHtml = "";
 
-                // 💡 Checkbox 依然使用 disabled 來阻擋點擊
                 const checkinDisabled = !isAdminUser ? 'disabled' : '';
                 const invoiceDisabled = !isAdminUser ? 'disabled' : '';
                 const consentDisabled = !(isAdminUser || isRenzhenUser) ? 'disabled' : ''; 
                 
-                // 💡 文字框改用 readonly，讓使用者可以點開看但無法修改
                 const notesReadonly = !isAdminUser ? 'readonly' : '';
                 
-                // 💡 只有管理者修改後失焦，才會觸發存檔動作，節省網路資源
                 const checkinNoteBlur = isAdminUser ? `onblur="updateCloudField(${index}, '報到備註', this.value)"` : '';
                 const confirmBlur = isAdminUser ? `onblur="updateCloudField(${index}, '待確認事項', this.value)"` : '';
                 const liveNoteBlur = isAdminUser ? `onblur="updateCloudField(${index}, '備註', this.value)"` : '';
