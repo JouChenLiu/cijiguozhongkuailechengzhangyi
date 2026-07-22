@@ -39,9 +39,7 @@
             padding: 12px 10px !important;
         }
 
-        #mainTable tbody td {
-            padding: 8px 10px !important;
-        }
+        #mainTable tbody td { padding: 8px 10px !important; }
         
         .stats-box {
             border: 1px solid #e2e8f0 !important;
@@ -50,9 +48,7 @@
             background-color: #ffffff;
             cursor: pointer; 
         }
-        .stats-box:hover {
-            filter: brightness(0.97);
-        }
+        .stats-box:hover { filter: brightness(0.97); }
         
         .active-camper {
             background-color: #f0f7ff !important;
@@ -70,122 +66,63 @@
             box-shadow: 0 6px 15px rgba(25, 135, 84, 0.08) !important;
         }
         
-        .inactive-box {
-            background-color: #ffffff !important;
-            border-left: 6px solid #cbd5e1 !important;
-            opacity: 0.6;
-        }
+        .inactive-box { background-color: #ffffff !important; border-left: 6px solid #cbd5e1 !important; opacity: 0.6; }
 
         .search-container { position: relative; }
         .inner-clear-btn {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: #a0aec0;
-            font-weight: bold;
-            font-size: 1.1rem;
-            padding: 0 4px;
-            z-index: 5;
-            transition: color 0.2s ease;
-            display: none;
+            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+            background: none; border: none; color: #a0aec0; font-weight: bold;
+            font-size: 1.1rem; padding: 0 4px; z-index: 5; transition: color 0.2s ease; display: none;
         }
         .inner-clear-btn:hover { color: #0d6efd; }
 
-        #syncStatus {
-            font-size: 0.85rem !important; 
-            vertical-align: middle;       
-            margin-left: 10px;            
-            padding: 5px 10px;            
-            font-weight: bold;
-            letter-spacing: 0.5px;
-        }
-
-        .td-relative { position: relative; }
-        .td-snug {
-            position: relative;
-            padding: 8px 6px !important; 
-        }
+        #syncStatus { font-size: 0.85rem !important; vertical-align: middle; margin-left: 10px; padding: 5px 10px; font-weight: bold; letter-spacing: 0.5px; }
+        
+        .td-snug { position: relative; padding: 8px 6px !important; }
 
         .input-expandable {
-            height: 31px;
-            min-height: 31px;
-            max-height: 31px;
-            resize: none;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+            height: 31px; min-height: 31px; max-height: 31px; resize: none; overflow: hidden;
+            white-space: nowrap; text-overflow: ellipsis; transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; width: 100%;
         }
         
-        .input-expandable:disabled, 
-        .input-expandable[readonly] {
-            background-color: #f8f9fa !important;
-            border-color: #e2e8f0 !important;
-            color: #64748b !important;
-        }
-        .input-expandable:disabled {
-            cursor: not-allowed;
-        }
-        .input-expandable[readonly] {
-            cursor: pointer; 
-        }
+        .input-expandable:disabled, .input-expandable[readonly] { background-color: #f8f9fa !important; border-color: #e2e8f0 !important; color: #64748b !important; }
+        .input-expandable:disabled { cursor: not-allowed; }
+        .input-expandable[readonly] { cursor: pointer; }
         
-        .input-short-pop { width: 100%; margin: 0 auto; }
-        .input-short-pop:focus:not(:disabled) {
+        .input-short-pop:focus:not(:disabled), .input-part-pop:focus:not(:disabled), .input-long-pop:focus:not(:disabled) {
             position: absolute; right: 0 !important; left: auto !important; width: 100% !important;        
-            max-width: 85vw !important; height: 110px !important; max-height: 110px !important;
+            height: 110px !important; max-height: 110px !important;
             transform: translate(0, -15px) scale(1.01); white-space: normal !important; overflow-y: auto !important;   
             z-index: 1010; text-align: left !important; font-size: 0.95rem !important; 
             background-color: #ffffff !important; border-color: #198754 !important; 
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important; cursor: text;
         }
+        .input-long-pop:focus:not(:disabled) { border-color: #0d6efd !important; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18) !important; }
+        .input-expandable[readonly]:focus { border-color: #cbd5e1 !important; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important; }
 
-        .input-part-pop { width: 100%; margin: 0 auto; }
-        .input-part-pop:focus:not(:disabled) {
-            position: absolute; right: 0 !important; left: auto !important; width: 100% !important;        
-            max-width: 85vw !important; height: 110px !important; max-height: 110px !important;
-            transform: translate(0, -15px) scale(1.01); white-space: normal !important; overflow-y: auto !important;   
-            z-index: 1010; text-align: left !important; font-size: 0.95rem !important; 
-            background-color: #ffffff !important; border-color: #198754 !important; 
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important; cursor: text;
-        }
+        .contact-widget { position: fixed; bottom: 25px; right: 25px; z-index: 1050; }
 
-        .input-long-pop { width: 100%; }
-        .input-long-pop:focus:not(:disabled) {
-            position: absolute; right: 0 !important; left: auto !important; width: 100% !important;        
-            max-width: 85vw !important; height: 102px !important; max-height: 102px !important;
-            transform: translate(0, -15px) scale(1.01); white-space: normal !important; overflow-y: auto !important;
-            z-index: 1010; text-align: left !important; font-size: 0.95rem !important; 
-            background-color: #ffffff !important; border-color: #0d6efd !important; 
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18) !important; cursor: text;
-        }
-
-        .input-expandable[readonly]:focus {
-            border-color: #cbd5e1 !important;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
-        }
-
-        .contact-widget {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            z-index: 1050;
-        }
-
-        .premium-blue-header {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important;
+        .premium-blue-header { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important; color: #ffffff !important; border-bottom: none; }
+        .premium-green-header { background: linear-gradient(135deg, #0f5132 0%, #198754 100%) !important; color: #ffffff !important; border-bottom: none; }
+        .premium-blue-header .modal-title, .premium-green-header .modal-title { color: #ffffff !important; }
+        
+        /* 數據分析表格專屬樣式 */
+        .analytics-table th { background-color: #f8f9fa !important; border-bottom: 2px solid #dee2e6; }
+        .analytics-table td, .analytics-table th { padding: 8px 5px !important; vertical-align: middle; }
+        
+        /* 自訂溫和提醒紅：標籤與按鈕 */
+        .bg-custom-red {
+            background-color: #D65A5A !important;
             color: #ffffff !important;
-            border-bottom: none;
         }
-        .premium-green-header {
-            background: linear-gradient(135deg, #0f5132 0%, #198754 100%) !important;
+        .btn-custom-red {
+            background-color: #D65A5A !important;
             color: #ffffff !important;
-            border-bottom: none;
+            border-color: #D65A5A !important;
         }
-        .premium-blue-header .modal-title, .premium-green-header .modal-title {
+        .btn-custom-red:hover {
+            background-color: #B84747 !important; /* 滑鼠移過去稍微變深，增加點擊回饋感 */
+            border-color: #B84747 !important;
             color: #ffffff !important;
         }
     </style>
@@ -197,102 +134,164 @@
         <h2 class="mb-0">⛺ 國中營現場即時管理系統 <span class="badge bg-success" id="syncStatus">連線中...</span></h2>
         <div class="d-flex gap-2 align-items-center">
             <span id="userRoleBadge" class="badge bg-secondary py-2 px-3 fw-bold" style="font-size:0.9rem;">👀 目前權限：僅供閱讀</span>
+            <button id="adminSettingBtn" class="btn btn-outline-primary fw-bold shadow-sm d-none" data-bs-toggle="modal" data-bs-target="#yearVisibilityModal" onclick="loadYearVisibility()">👁️ 開放年度設定</button>
+            <button id="analyticsBtn" class="btn btn-outline-success fw-bold shadow-sm d-none" data-bs-toggle="modal" data-bs-target="#analyticsModal" onclick="generateAnalytics()">📈 營隊詳細數據分析</button>
             <button id="viewMsgBtn" class="btn btn-warning fw-bold shadow-sm d-none" data-bs-toggle="modal" data-bs-target="#msgModal" onclick="loadContactMessages()">✉️ 查看聯繫訊息</button>
             <button id="authBtn" class="btn btn-dark fw-bold shadow-sm" onclick="handleAuthClick()">👤 管理者登入</button>
         </div>
     </div>
     
-    <div class="mb-3">
-        <div class="row g-3 align-items-center bg-white p-3 rounded shadow-sm border">
-            <div class="col-md-2">
-                <label class="form-label fw-bold text-danger">📅 選擇年度</label>
-                <select class="form-select border-danger" id="yearFilter" onchange="switchYear(this.value)">
+    <div id="noAccessMessage" class="alert alert-danger text-center fw-bold fs-5 shadow-sm d-none py-4" style="margin-top: 50px;">
+        ⚠️ 目前管理團隊無開放權限，如有需要，請使用右下角訊息功能聯絡管理團隊。
+    </div>
+
+    <div id="mainContentWrapper">
+        <div class="mb-3">
+            <div class="row g-3 align-items-center bg-white p-3 rounded shadow-sm border">
+                <div class="col-md-2">
+                    <label class="form-label fw-bold text-danger">📅 選擇年度</label>
+                    <select class="form-select border-danger" id="yearFilter" onchange="switchYear(this.value)"></select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">1. 選擇管理對象</label>
+                    <div class="btn-group w-100" role="group">
+                        <input type="radio" class="btn-check" name="roleRadio" id="radioCamper" checked onclick="switchRole('campers')">
+                        <label class="btn btn-outline-primary" for="radioCamper">學員名單 (含隊輔)</label>
+                        <input type="radio" class="btn-check" name="roleRadio" id="radioStaff" onclick="switchRole('staff')">
+                        <label class="btn btn-outline-primary" for="radioStaff">慈青工作人員</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">2. 篩選組別</label>
+                    <select class="form-select" id="groupFilter" onchange="renderTable()">
+                        <option value="全部">全部組別</option>
                     </select>
-            </div>
-            
-            <div class="col-md-4">
-                <label class="form-label fw-bold">1. 選擇管理對象</label>
-                <div class="btn-group w-100" role="group">
-                    <input type="radio" class="btn-check" name="roleRadio" id="radioCamper" checked onclick="switchRole('campers')">
-                    <label class="btn btn-outline-primary" for="radioCamper">學員名單 (含隊輔)</label>
-                    <input type="radio" class="btn-check" name="roleRadio" id="radioStaff" onclick="switchRole('staff')">
-                    <label class="btn btn-outline-primary" for="radioStaff">慈青工作人員</label>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold text-primary">🔍 3. 搜尋姓名</label>
+                    <div class="search-container">
+                        <input type="text" class="form-control border-primary pe-5" id="nameSearch" placeholder="請輸入姓名..." oninput="handleNameSearch()">
+                        <button type="button" class="inner-clear-btn" onclick="clearSearchInput()" id="clearBtn" title="清空搜尋內容">✕</button>
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-between align-items-end mt-2 pt-2 border-top">
+                    <div>
+                        <span class="text-primary d-block small mb-1 fw-bold">🔵 提示：點選下方的總計框，可快速查看各組詳細人數。點擊下方文字框可展開閱讀完整內容。</span>
+                        <span id="adminHintText" class="text-muted d-block small d-none">修改文字輸入框後點擊旁邊即可即時同步存檔。</span>
+                    </div>
+                    <div><button class="btn btn-sm btn-warning fw-bold" onclick="location.reload()">🔄 強制整理全站</button></div>
                 </div>
             </div>
-            
-            <div class="col-md-3">
-                <label class="form-label fw-bold">2. 篩選組別</label>
-                <select class="form-select" id="groupFilter" onchange="renderTable()">
-                    <option value="全部">全部組別</option>
-                </select>
-            </div>
-            
-            <div class="col-md-3">
-                <label class="form-label fw-bold text-primary">🔍 3. 搜尋姓名</label>
-                <div class="search-container">
-                    <input type="text" class="form-control border-primary pe-5" id="nameSearch" placeholder="請輸入姓名..." oninput="handleNameSearch()">
-                    <button type="button" class="inner-clear-btn" onclick="clearSearchInput()" id="clearBtn" title="清空搜尋內容">✕</button>
+        </div>
+
+        <div class="row g-3 mb-4" id="statsBoxesContainer">
+            <div class="col-12 col-md-6">
+                <div class="card p-3 shadow-sm stats-box" id="camperStatsBox" onclick="showGroupStats('campers')" title="點擊查看各組詳細報到人數">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1 mb-1 fw-bold" style="font-size:0.75rem;">👥 營隊學員</span>
+                            <div class="fw-black text-dark h5 mb-0" id="camperGroupLabel" style="letter-spacing: 0.3px;">全體學員總計 (不含隊輔)</div>
+                        </div>
+                        <div class="text-end">
+                            <span class="fs-4 fw-bold text-primary align-middle" id="camperStatsText">0 / 0</span>
+                            <span class="badge bg-primary text-white ms-2 px-2 py-1.5 align-middle font-monospace" id="camperStatsPercent" style="font-size:0.85rem;">0%</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
-            <div class="col-12 d-flex justify-content-between align-items-end mt-2 pt-2 border-top">
-                <div>
-                    <span class="text-primary d-block small mb-1 fw-bold">🔵 提示：點選下方「全體學員」或「全體工作團隊」的總計框，可快速查看各組詳細人數。點擊下方文字框可展開閱讀完整內容。</span>
-                    <span id="adminHintText" class="text-muted d-block small d-none">修改文字輸入框後點擊旁邊即可即時同步存檔。</span>
+            <div class="col-12 col-md-6">
+                <div class="card p-3 shadow-sm stats-box" id="staffStatsBox" onclick="showGroupStats('staff')" title="點擊查看各組詳細報到人數">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 mb-1 fw-bold" style="font-size:0.75rem;">🛠️ 工作團隊</span>
+                            <div class="fw-black text-dark h5 mb-0" id="staffGroupLabel" style="letter-spacing: 0.3px;">全體工作團隊總計</div>
+                        </div>
+                        <div class="text-end">
+                            <span class="fs-4 fw-bold text-success align-middle" id="staffStatsText">0 / 0</span>
+                            <span class="badge bg-success text-white ms-2 px-2 py-1.5 align-middle font-monospace" id="staffStatsPercent" style="font-size:0.85rem;">0%</span>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <button class="btn btn-sm btn-warning fw-bold" onclick="location.reload()">🔄 強制整理全站</button>
-                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered align-middle text-center" id="mainTable">
+                <thead class="table-dark" id="tableHeader"></thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="yearVisibilityModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title fw-bold">👁️ 開放一般人觀看年度設定</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted small mb-3">請勾選允許一般使用者 (未登入者) 查看的年度資料。<br>未勾選的年度只有管理員能看見。</p>
+                <div id="visibilityCheckboxes" class="d-flex flex-column gap-2"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary fw-bold" onclick="saveYearVisibility()">儲存設定</button>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="row g-3 mb-4">
-        <div class="col-12 col-md-6">
-            <div class="card p-3 shadow-sm stats-box" id="camperStatsBox" onclick="showGroupStats('campers')" title="點擊查看各組詳細報到人數">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1 mb-1 fw-bold" style="font-size:0.75rem;">👥 營隊學員</span>
-                        <div class="fw-black text-dark h5 mb-0" id="camperGroupLabel" style="letter-spacing: 0.3px;">全體學員總計 (不含隊輔)</div>
+<!-- 新增：數據分析 Modal -->
+<div class="modal fade" id="analyticsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title fw-bold">📈 營隊詳細數據分析</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body bg-light">
+                <!-- 將所有選單與按鈕排在同一列 (d-flex flex-wrap) -->
+                <div class="mb-4 d-flex flex-wrap align-items-center justify-content-center gap-4 border-bottom pb-3">
+                    <div class="d-flex align-items-center">
+                        <label class="fw-bold me-2 mb-0">切換分析年度：</label>
+                        <select id="analyticsYearSelect" class="form-select d-inline-block w-auto" onchange="generateAnalytics()"></select>
                     </div>
-                    <div class="text-end">
-                        <span class="fs-4 fw-bold text-primary align-middle" id="camperStatsText">0 / 0</span>
-                        <span class="badge bg-primary text-white ms-2 px-2 py-1.5 align-middle font-monospace" id="camperStatsPercent" style="font-size:0.85rem;">0%</span>
+                    
+                    <div class="btn-group shadow-sm" role="group">
+                        <input type="radio" class="btn-check" name="analyticsView" id="viewAll" autocomplete="off" checked onchange="generateAnalytics()">
+                        <label class="btn btn-outline-success fw-bold px-3" for="viewAll">全部資料</label>
+
+                        <input type="radio" class="btn-check" name="analyticsView" id="viewCampers" autocomplete="off" onchange="generateAnalytics()">
+                        <label class="btn btn-outline-primary fw-bold px-3" for="viewCampers">學員與隊輔</label>
+
+                        <input type="radio" class="btn-check" name="analyticsView" id="viewStaff" autocomplete="off" onchange="generateAnalytics()">
+                        <label class="btn btn-outline-info fw-bold px-3 text-dark" for="viewStaff">工作人員</label>
                     </div>
+
+                    <div class="btn-group shadow-sm" role="group">
+                        <input type="radio" class="btn-check" name="analyticsStatus" id="statusAll" autocomplete="off" checked onchange="generateAnalytics()">
+                        <label class="btn btn-outline-secondary fw-bold px-3" for="statusAll">全部人數資料</label>
+
+                        <input type="radio" class="btn-check" name="analyticsStatus" id="statusChecked" autocomplete="off" onchange="generateAnalytics()">
+                        <label class="btn btn-outline-secondary fw-bold px-3" for="statusChecked">已報到的人數資料</label>
+                    </div>
+                </div>
+                
+                <div id="analyticsContent" class="row g-4 align-items-start">
+                    <!-- 將由 JS 動態生成區塊 -->
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-6">
-            <div class="card p-3 shadow-sm stats-box" id="staffStatsBox" onclick="showGroupStats('staff')" title="點擊查看各組詳細報到人數">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 mb-1 fw-bold" style="font-size:0.75rem;">🛠️ 工作團隊</span>
-                        <div class="fw-black text-dark h5 mb-0" id="staffGroupLabel" style="letter-spacing: 0.3px;">全體工作團隊總計</div>
-                    </div>
-                    <div class="text-end">
-                        <span class="fs-4 fw-bold text-success align-middle" id="staffStatsText">0 / 0</span>
-                        <span class="badge bg-success text-white ms-2 px-2 py-1.5 align-middle font-monospace" id="staffStatsPercent" style="font-size:0.85rem;">0%</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="table-responsive">
-        <table class="table table-hover table-bordered align-middle text-center" id="mainTable">
-            <thead class="table-dark" id="tableHeader"></thead>
-            <tbody id="tableBody"></tbody>
-        </table>
     </div>
 </div>
 
 <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1080;">
     <div id="adminNotifyToast" class="toast align-items-center text-bg-danger border-0 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
-            <div class="toast-body fw-bold text-white fs-6" id="adminNotifyToastBody">
-                🔔 收到一則新的現場回報訊息！
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            <div class="toast-body fw-bold text-white fs-6" id="adminNotifyToastBody">🔔 收到一則新的現場回報訊息！</div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
         </div>
     </div>
 </div>
@@ -306,7 +305,7 @@
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title fw-bold">✉️ 聯繫管理者</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <div class="mb-3">
@@ -330,27 +329,24 @@
     <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content">
             <div class="modal-header bg-dark text-white">
-                <h5 class="modal-title fw-bold">🔑 系統權限認證</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title fw-bold">🔑 管理者登入</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body pb-4">
                 <div class="d-grid gap-2 mb-3 mt-2">
                     <button class="btn btn-outline-dark fw-bold d-flex align-items-center justify-content-center py-2" onclick="loginWithGoogle()">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" style="width: 20px; height: 20px; margin-right: 10px;">
                         使用 Google 帳號登入
                     </button>
                 </div>
                 <div class="d-flex align-items-center mb-3">
-                    <hr class="flex-grow-1">
-                    <span class="mx-2 text-muted small fw-bold">或使用帳號密碼</span>
-                    <hr class="flex-grow-1">
+                    <hr class="flex-grow-1"><span class="mx-2 text-muted small fw-bold">或使用帳號密碼</span><hr class="flex-grow-1">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label fw-bold small text-muted">電子信箱 (Email)</label>
+                    <label class="form-label fw-bold small text-muted">電子信箱</label>
                     <input type="email" id="loginEmail" class="form-control" placeholder="請輸入信箱">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label fw-bold small text-muted">密碼 (Password)</label>
+                    <label class="form-label fw-bold small text-muted">密碼</label>
                     <input type="password" id="loginPassword" class="form-control" placeholder="請輸入密碼">
                 </div>
                 <div class="d-grid gap-2 mt-4">
@@ -366,19 +362,15 @@
         <div class="modal-content">
             <div class="modal-header bg-warning text-dark">
                 <h5 class="modal-title fw-bold">✉️ 營隊現場回報訊息清單</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <div class="table-responsive" style="max-height: 450px; overflow-y: auto !important; padding: 0;">
                     <table class="table table-striped table-hover align-middle mb-0">
                         <thead class="table-dark">
-                            <tr>
-                                <th>回報時間</th><th>發送人資訊</th><th>回報內容</th><th>操作</th>
-                            </tr>
+                            <tr><th>回報時間</th><th>發送人資訊</th><th>回報內容</th><th>操作</th></tr>
                         </thead>
-                        <tbody id="msgTableBody">
-                            <tr><td colspan="4" class="text-center text-muted">讀取中...</td></tr>
-                        </tbody>
+                        <tbody id="msgTableBody"><tr><td colspan="4" class="text-center text-muted">讀取中...</td></tr></tbody>
                     </table>
                 </div>
             </div>
@@ -391,93 +383,71 @@
         <div class="modal-content">
             <div class="modal-header" id="groupStatsModalHeader">
                 <h5 class="modal-title fw-bold text-white" id="groupStatsModalTitle">📊 各組報到統計</h5>
-                <button type="button" class="btn-close" id="groupStatsModalCloseBtn" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" id="groupStatsModalCloseBtn" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-0">
                 <table class="table table-striped table-hover align-middle mb-0 text-center" style="table-layout: fixed;">
                     <thead class="table-dark">
-                        <tr>
-                            <th>組別</th>
-                            <th>男生</th>
-                            <th>女生</th>
-                            <th>已報到</th>
-                            <th>總人數</th>
-                            <th>報到率</th>
-                        </tr>
+                        <tr><th>組別</th><th>男生</th><th>女生</th><th>已報到</th><th>總人數</th><th>報到率</th></tr>
                     </thead>
-                    <tbody id="groupStatsTableBody">
-                    </tbody>
+                    <tbody id="groupStatsTableBody"></tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
 
+<!-- 1. 引入外部套件 -->
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-<script>
-    (function() {
-        // ⚠️ 請填入您的 EmailJS Public Key (公開金鑰)
-        emailjs.init("T5jUhJh3JQT2a7kUr");
-    })();
-</script>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+<!-- 2. 引入您的本地設定檔 -->
+<script src="config.js"></script>
+
+<!-- 3. 您的主程式碼接在最後 -->
 <script>
-    // ⚠️ 記得替換您的 apiKey!
-    const firebaseConfig = {
-        apiKey: "AIzaSyAIMqhpPWrjUE_SDfLXKLt7B4ryn8G4G1U",
-        authDomain: "cijiguozhongkuailechengz-26e8d.firebaseapp.com",
-        projectId: "cijiguozhongkuailechengz-26e8d",
-        databaseURL: "https://cijiguozhongkuailechengz-26e8d-default-rtdb.asia-southeast1.firebasedatabase.app/"
-    };
-    
-    firebase.initializeApp(firebaseConfig);
+    // 檢查 config.js 是否有成功讀取到變數
+    if (typeof APP_CONFIG !== 'undefined') {
+        // 使用設定檔內的資料初始化
+        emailjs.init(APP_CONFIG.EMAILJS_PUBLIC_KEY);
+        firebase.initializeApp(APP_CONFIG.FIREBASE);
+    } else {
+        alert("找不到設定檔 APP_CONFIG，請確認 config.js 路徑是否正確！");
+    }
+
     const database = firebase.database();
     
+    // ... 下方保留您原本的各種變數與函式 (let auth = null; ...)
     let auth = null;
-    try {
-        auth = firebase.auth();
-    } catch (e) {
-        console.warn("⚠️ Firebase Auth 初始化失敗，系統將暫時切換為唯讀模式。錯誤細節：", e);
-    }
+    try { auth = firebase.auth(); } catch (e) { console.warn("Firebase Auth 初始化失敗", e); }
 
     let userRole = 'reader'; 
     let allCampData = {};    
     let currentYear = "";    
     let currentRole = 'campers'; 
     let currentGroupOrder = [];
-
     let lastMsgCount = -1;
     let adminMsgListenerRef = null;
+    let isDataLoaded = false; // 【新增】用來記錄 Firebase 資料是否已經載入完成
 
     if (auth) {
         auth.onAuthStateChanged((user) => {
             if (user) {
                 database.ref(`users/${user.uid}`).once('value').then((snapshot) => {
                     const userData = snapshot.val();
-                    if (userData && userData.role) {
-                        userRole = userData.role;
-                    } else {
-                        userRole = 'reader'; 
-                    }
-                    const displayName = user.displayName || user.email;
-                    updateUIForRole(displayName);
-                    renderTable();
+                    userRole = (userData && userData.role) ? userData.role : 'reader';
+                    updateUIForRole(user.displayName || user.email);
+                    updateYearFilter();
                 });
             } else {
                 userRole = 'reader';
                 updateUIForRole(null);
-                renderTable();
+                updateYearFilter();
             }
         });
-    } else {
-        userRole = 'reader';
-        updateUIForRole(null);
     }
 
     function updateUIForRole(name) {
@@ -485,27 +455,36 @@
         const roleBadge = document.getElementById('userRoleBadge');
         const viewMsgBtn = document.getElementById('viewMsgBtn');
         const adminHint = document.getElementById('adminHintText'); 
+        const adminSettingBtn = document.getElementById('adminSettingBtn');
+        const analyticsBtn = document.getElementById('analyticsBtn');
 
         if (name) {
             authBtn.innerText = "🔒 登出系統";
-            authBtn.className = "btn btn-danger fw-bold shadow-sm";
+            // 改套用溫和紅按鈕樣式
+            authBtn.className = "btn btn-custom-red fw-bold shadow-sm";
             
             if (userRole === 'admin') {
                 roleBadge.innerText = `👑 管理者：${name}`;
-                roleBadge.className = "badge bg-danger py-2 px-3 fw-bold";
+                roleBadge.className = "badge bg-custom-red py-2 px-3 fw-bold";
                 viewMsgBtn.classList.remove('d-none'); 
+                adminSettingBtn.classList.remove('d-none');
+                analyticsBtn.classList.remove('d-none');
                 if(adminHint) adminHint.classList.remove('d-none'); 
                 startAdminMessageListener(); 
             } else if (userRole === 'renzhen') {
                 roleBadge.innerText = `🤝 人真組：${name}`;
-                roleBadge.className = "badge bg-success py-2 px-3 fw-bold";
+                roleBadge.className = "badge bg-custom-red py-2 px-3 fw-bold";
                 viewMsgBtn.classList.add('d-none');
+                adminSettingBtn.classList.add('d-none');
+                analyticsBtn.classList.add('d-none');
                 if(adminHint) adminHint.classList.add('d-none'); 
                 stopAdminMessageListener();
             } else {
                 roleBadge.innerText = `👀 純閱讀：${name}`;
-                roleBadge.className = "badge bg-secondary py-2 px-3 fw-bold";
+                roleBadge.className = "badge bg-custom-red py-2 px-3 fw-bold";
                 viewMsgBtn.classList.add('d-none');
+                adminSettingBtn.classList.add('d-none');
+                analyticsBtn.classList.add('d-none');
                 if(adminHint) adminHint.classList.add('d-none'); 
                 stopAdminMessageListener();
             }
@@ -515,15 +494,20 @@
             roleBadge.innerText = "👀 目前權限：僅供閱讀";
             roleBadge.className = "badge bg-secondary py-2 px-3 fw-bold";
             viewMsgBtn.classList.add('d-none');
+            adminSettingBtn.classList.add('d-none');
+            analyticsBtn.classList.add('d-none');
             if(adminHint) adminHint.classList.add('d-none'); 
             stopAdminMessageListener();
         }
     }
-
+    
     function startAdminMessageListener() {
         if (adminMsgListenerRef) return; 
         
-        adminMsgListenerRef = database.ref('2026/contacts');
+        // 改為動態抓取當前年度，解決寫死 2026 的問題
+        const targetPath = currentYear ? `${currentYear}/contacts` : '2026/contacts';
+        adminMsgListenerRef = database.ref(targetPath);
+        
         adminMsgListenerRef.on('value', (snapshot) => {
             if (userRole !== 'admin') return; 
 
@@ -532,8 +516,9 @@
             const viewMsgBtn = document.getElementById('viewMsgBtn');
             
             if (currentCount > 0) {
+                // 【修正處】按鈕維持 btn-warning (黃色)，只有右側的數字 Badge 是 bg-danger (紅色)
                 viewMsgBtn.innerHTML = `✉️ 查看聯繫訊息 <span class="badge bg-danger rounded-pill shadow-sm ms-1 border border-light">${currentCount}</span>`;
-                viewMsgBtn.className = "btn btn-danger fw-bold shadow-sm"; 
+                viewMsgBtn.className = "btn btn-warning fw-bold shadow-sm"; 
             } else {
                 viewMsgBtn.innerHTML = `✉️ 查看聯繫訊息`;
                 viewMsgBtn.className = "btn btn-warning fw-bold shadow-sm"; 
@@ -551,64 +536,28 @@
     }
 
     function stopAdminMessageListener() {
-        if (adminMsgListenerRef) {
-            adminMsgListenerRef.off();
-            adminMsgListenerRef = null;
-            lastMsgCount = -1;
-        }
+        if (adminMsgListenerRef) { adminMsgListenerRef.off(); adminMsgListenerRef = null; lastMsgCount = -1; }
     }
 
     function handleAuthClick() {
-        if (!auth) {
-            alert("⚠️ 系統尚未設定完整的 Firebase 登入資訊，目前僅供一般唯讀。");
-            return;
-        }
-
-        if (auth.currentUser) {
-            auth.signOut().then(() => {
-                alert("已成功登出系統，目前處於「唯讀模式」。");
-            });
-        } else {
-            const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
-            loginModal.show();
-        }
-    }
-
-    function loginFirebase() {
         if (!auth) return;
+        if (auth.currentUser) { auth.signOut().then(() => alert("已成功登出系統，目前處於「唯讀模式」。")); } 
+        else { new bootstrap.Modal(document.getElementById('loginModal')).show(); }
+    }
+    
+    function loginFirebase() {
         const email = document.getElementById('loginEmail').value.trim();
         const pass = document.getElementById('loginPassword').value.trim();
-        
-        if (!email || !pass) {
-            alert("請填寫完整的信箱與密碼！");
-            return;
-        }
-
+        if (!email || !pass) { alert("請填寫完整的信箱與密碼！"); return; }
         auth.signInWithEmailAndPassword(email, pass)
-            .then(() => {
-                const loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
-                loginModal.hide();
-                document.getElementById('loginEmail').value = "";
-                document.getElementById('loginPassword').value = "";
-                alert("認證成功！已成功切換對應系統權限。");
-            })
-            .catch((error) => {
-                alert(`認證失敗：${error.message}`);
-            });
+            .then(() => { bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide(); })
+            .catch(error => alert(`認證失敗：${error.message}`));
     }
 
     function loginWithGoogle() {
-        if (!auth) return;
-        const provider = new firebase.auth.GoogleAuthProvider();
-        auth.signInWithPopup(provider)
-            .then((result) => {
-                const loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
-                loginModal.hide();
-                alert("Google 認證成功！已成功切換對應系統權限。");
-            })
-            .catch((error) => {
-                alert(`Google 認證失敗：${error.message}`);
-            });
+        auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
+            .then(() => { bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide(); })
+            .catch(error => alert(`Google 認證失敗：${error.message}`));
     }
 
     function sendContactMessage() {
@@ -628,43 +577,48 @@
 
         const timestamp = new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' });
         
+        // 【關鍵修正】動態抓取當前選擇的年度，避免寫死 2026
+        const targetPath = currentYear ? `${currentYear}/contacts` : '2026/contacts';
+
         // 1. 將訊息存入 Firebase 資料庫
-        database.ref('2026/contacts').push({
+        database.ref(targetPath).push({
             sender: sender,
             message: message,
             time: timestamp
         }).then(() => {
             
             // 2. 觸發 EmailJS 寄送信件
-            // ⚠️ 請填入您的 EmailJS Service ID 與 Template ID
             const templateParams = {
                 sender_name: sender,
                 message: message,
                 time: timestamp
             };
 
-            emailjs.send('service_0pd51bn', 'template_fcmv6p8', templateParams)
+            // ⚠️ 請確保這裡填入您真實的 Service ID 與 Template ID
+            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
                 .then(function(response) {
-                    console.log('EmailJS 發送成功!', response.status, response.text);
                     alert("✅ 訊息傳送成功！管理員已收到 Email 信件通知。");
                     resetContactForm();
-                }, function(error) {
+                }).catch(function(error) {
                     console.error('EmailJS 發送失敗...', error);
                     alert("⚠️ 訊息已存入資料庫，但 Email 通知發送失敗。請聯繫開發人員確認 EmailJS 設定。");
                     resetContactForm();
                 });
 
         }).catch((err) => {
-            alert("❌ 訊息傳送失敗，請確認 Firebase 安全規則設定是否已開放寫入權限。");
+            // 【新增防呆】如果 Firebase 寫入失敗 (例如網路斷線或權限問題)，要解鎖按鈕
+            console.error("Firebase 寫入失敗:", err);
+            alert("❌ 訊息傳送失敗，請確認網路狀態或 Firebase 權限設定。");
             sendBtn.innerText = originalBtnText;
             sendBtn.disabled = false;
         });
 
+        // 獨立出重設表單的邏輯，讓程式碼更簡潔乾淨
         function resetContactForm() {
             document.getElementById('contactSender').value = "";
             document.getElementById('contactMessage').value = "";
             const contactModal = bootstrap.Modal.getInstance(document.getElementById('contactModal'));
-            contactModal.hide();
+            if (contactModal) contactModal.hide();
             sendBtn.innerText = originalBtnText;
             sendBtn.disabled = false;
         }
@@ -674,7 +628,10 @@
         const tableBody = document.getElementById('msgTableBody');
         tableBody.innerHTML = `<tr><td colspan="4" class="text-center text-muted">正在載入最新訊息...</td></tr>`;
 
-        database.ref('2026/contacts').once('value', (snapshot) => {
+        // 動態抓取當前年度
+        const targetPath = currentYear ? `${currentYear}/contacts` : '2026/contacts';
+
+        database.ref(targetPath).once('value').then((snapshot) => {
             const data = snapshot.val();
             tableBody.innerHTML = "";
             if (!data) {
@@ -687,434 +644,496 @@
                 const item = data[key];
                 tableBody.innerHTML += `
                     <tr>
-                        <td class="small font-monospace">${item.time}</td>
-                        <td class="fw-bold">${item.sender}</td>
-                        <td>${item.message}</td>
+                        <td class="small font-monospace">${item.time || ''}</td>
+                        <td class="fw-bold">${item.sender || ''}</td>
+                        <td>${item.message || ''}</td>
                         <td><button class="btn btn-sm btn-outline-danger" onclick="deleteContactMsg('${key}')">刪除</button></td>
                     </tr>
                 `;
             });
+        }).catch(error => {
+            console.error("載入訊息失敗:", error);
+            // 萬一權限阻擋，會直接把原因印在畫面上，不再卡死
+            tableBody.innerHTML = `<tr><td colspan="4" class="text-center text-danger fw-bold p-4">載入失敗：${error.message}</td></tr>`;
         });
     }
 
     function deleteContactMsg(key) {
         if (confirm("確認要刪除這筆回報紀錄嗎？")) {
-            database.ref(`2026/contacts/${key}`).remove().then(() => {
+            const targetPath = currentYear ? `${currentYear}/contacts/${key}` : `2026/contacts/${key}`;
+            database.ref(targetPath).remove().then(() => {
                 alert("訊息已成功刪除。");
                 loadContactMessages(); 
+            }).catch(error => {
+                alert("刪除失敗：" + error.message);
             });
         }
     }
 
     database.ref('/').on('value', (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-            allCampData = data;
-            document.getElementById('syncStatus').innerText = "雲端即時同步中";
-            document.getElementById('syncStatus').className = "badge bg-success";
-            
-            updateYearFilter();
-            updateGroupFilter();
-            renderTable();
-        } else {
-            document.getElementById('syncStatus').innerText = "資料庫無資料";
-            document.getElementById('syncStatus').className = "badge bg-warning";
-        }
-    }, (error) => {
+        allCampData = snapshot.val() || {};
+        isDataLoaded = true; // 【新增】標記資料已經從雲端順利抓下來了
+        
+        document.getElementById('syncStatus').innerText = allCampData ? "雲端即時同步中" : "資料庫無資料";
+        document.getElementById('syncStatus').className = allCampData ? "badge bg-success" : "badge bg-warning";
+        updateYearFilter();
+    }, () => {
         document.getElementById('syncStatus').innerText = "連線中斷";
         document.getElementById('syncStatus').className = "badge bg-danger";
     });
 
+    // 動態載入年度邏輯 (加入權限過濾)
     function updateYearFilter() {
-        const yearSelect = document.getElementById('yearFilter');
-        const years = Object.keys(allCampData).filter(key => key !== 'users').sort().reverse();
+        // 【關鍵防呆】如果 Firebase 資料還沒回來，直接跳過，防止畫面閃現無權限提示
+        if (!isDataLoaded) return;
         
-        if (years.length === 0) return;
-        if (!currentYear || !years.includes(currentYear)) currentYear = years[0];
+        const yearSelect = document.getElementById('yearFilter');
+        const analyticsYearSelect = document.getElementById('analyticsYearSelect');
+        const noAccessMsg = document.getElementById('noAccessMessage');
+        const mainContent = document.getElementById('mainContentWrapper');
+
+        const visibleSettings = (allCampData.settings && allCampData.settings.visible_years) ? allCampData.settings.visible_years : {};
+        let allYears = Object.keys(allCampData).filter(key => key !== 'users' && key !== 'settings' && key !== 'contacts').sort().reverse();
+        
+        if (userRole === 'reader') {
+            allYears = allYears.filter(y => visibleSettings[y] === true);
+        }
+
+        if (allYears.length === 0) {
+            noAccessMsg.classList.remove('d-none');
+            mainContent.classList.add('d-none');
+            return;
+        } else {
+            noAccessMsg.classList.add('d-none');
+            mainContent.classList.remove('d-none');
+        }
+
+        if (!currentYear || !allYears.includes(currentYear)) currentYear = allYears[0];
 
         yearSelect.innerHTML = "";
-        years.forEach(y => {
+        analyticsYearSelect.innerHTML = "";
+        allYears.forEach(y => {
             yearSelect.innerHTML += `<option value="${y}" ${y === currentYear ? 'selected' : ''}>${y} 年度</option>`;
+            analyticsYearSelect.innerHTML += `<option value="${y}" ${y === currentYear ? 'selected' : ''}>${y} 年度</option>`;
+        });
+
+        updateGroupFilter();
+        renderTable();
+    }
+
+    // 開放年度設定
+    function loadYearVisibility() {
+        const container = document.getElementById('visibilityCheckboxes');
+        container.innerHTML = "";
+        const allYears = Object.keys(allCampData).filter(key => key !== 'users' && key !== 'settings' && key !== 'contacts').sort().reverse();
+        const visibleSettings = (allCampData.settings && allCampData.settings.visible_years) ? allCampData.settings.visible_years : {};
+
+        allYears.forEach(y => {
+            const isChecked = visibleSettings[y] === true;
+            container.innerHTML += `
+                <div class="form-check form-switch fs-5">
+                    <input class="form-check-input" type="checkbox" id="vis_${y}" ${isChecked ? 'checked' : ''}>
+                    <label class="form-check-label" for="vis_${y}">${y} 年度資料</label>
+                </div>
+            `;
         });
     }
 
-    function switchYear(year) {
-        currentYear = year;
-        updateGroupFilter();
-        renderTable();
+    function saveYearVisibility() {
+        // 抓取儲存按鈕，並在儲存時鎖定按鈕，給予使用者反饋
+        const saveBtn = document.querySelector('#yearVisibilityModal .btn-primary');
+        const originalText = saveBtn.innerText;
+        saveBtn.innerText = "⏳ 儲存中...";
+        saveBtn.disabled = true;
+
+        const allYears = Object.keys(allCampData).filter(key => key !== 'users' && key !== 'settings' && key !== 'contacts');
+        let updates = {};
+        
+        allYears.forEach(y => {
+            const cb = document.getElementById(`vis_${y}`);
+            if (cb) updates[y] = cb.checked;
+        });
+
+        // 寫入 Firebase 並加上錯誤捕捉 (catch)
+        database.ref('settings/visible_years').set(updates).then(() => {
+            alert("✅ 開放年度設定已儲存成功！");
+            
+            // 安全地關閉 Modal
+            const modalEl = document.getElementById('yearVisibilityModal');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            if (modal) {
+                modal.hide();
+            }
+        }).catch((error) => {
+            // 如果發生錯誤，將錯誤原因顯示給使用者看
+            console.error("Firebase 儲存失敗:", error);
+            alert("❌ 儲存失敗！\n錯誤原因：" + error.message + "\n\n(工程師提示：請確認您的 Firebase 資料庫安全性規則是否允許寫入 'settings' 節點)");
+        }).finally(() => {
+            // 無論成功或失敗，最後都把按鈕恢復原狀
+            saveBtn.innerText = originalText;
+            saveBtn.disabled = false;
+        });
     }
 
-    function switchRole(role) {
-        currentRole = role;
-        window.scrollTo({ top: 0, behavior: 'instant' });
-        updateGroupFilter();
-        renderTable();
+    // 營隊詳細數據分析 (升級版)
+    function generateAnalytics() {
+        const targetYear = document.getElementById('analyticsYearSelect').value;
+        const viewModeElement = document.querySelector('input[name="analyticsView"]:checked');
+        const viewMode = viewModeElement ? viewModeElement.id : 'viewAll';
+        const statusModeElement = document.querySelector('input[name="analyticsStatus"]:checked');
+        const statusMode = statusModeElement ? statusModeElement.id : 'statusAll';
+
+        if (!targetYear || !allCampData[targetYear]) {
+            document.getElementById('analyticsContent').innerHTML = '<div class="col-12 p-4 text-center text-muted">⚠️ 該年度目前沒有資料。</div>';
+            return;
+        }
+
+        let campersList = allCampData[targetYear].campers || [];
+        let staffList = allCampData[targetYear].staff || [];
+
+        // 依據「報到狀態」過濾資料
+        if (statusMode === 'statusChecked') {
+            campersList = campersList.filter(i => i.報到);
+            staffList = staffList.filter(i => i.報到);
+        }
+        const statusTitleText = statusMode === 'statusChecked' ? ' <span class="text-warning">(僅計算已報到)</span>' : '';
+
+        // 拆分身分
+        const pureCampers = campersList.filter(i => !String(i.身分||'').includes("隊輔") && !String(i.身分||'').includes("工作人員"));
+        const advisors = campersList.filter(i => String(i.身分||'').includes("隊輔"));
+
+        // 輔助函式：計算男女
+        const getGenderCounts = (arr, isStaff = false) => {
+            const male = arr.filter(i => String(isStaff ? i.生理性別 : i.性別 || '').includes('男')).length;
+            const female = arr.filter(i => String(isStaff ? i.生理性別 : i.性別 || '').includes('女')).length;
+            return { male, female, total: arr.length };
+        };
+
+        // 輔助函式：智慧解析組別數字 (能正確排序 "第一組" 到 "第十組")
+        const parseGroupNum = (g) => {
+            const str = String(g || '').trim();
+            if (str === '未分組') return 9999;
+            
+            // 優先抓取阿拉伯數字 (如 "1", "2")
+            const digits = str.match(/\d+/);
+            if (digits) return parseInt(digits[0], 10);
+            
+            // 如果是中文數字 (如 "一", "十")，對照轉換
+            const zhMap = {'十一':11, '十二':12, '十':10, '一':1, '二':2, '三':3, '四':4, '五':5, '六':6, '七':7, '八':8, '九':9};
+            for (let k in zhMap) {
+                if (str.includes(k)) return zhMap[k];
+            }
+            return 999;
+        };
+
+        const staffG = getGenderCounts(staffList, true);
+        const camperG = getGenderCounts(pureCampers, false);
+        const advG = getGenderCounts(advisors, false);
+
+        let html = "";
+
+        // 【元件 1】營隊總人數
+        const renderTotalSummary = () => `
+            <div class="col-12 col-lg-6">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header bg-dark text-white fw-bold">營隊總人數 (不含社區組隊, 大隊輔, 人醫會, 同仁)${statusTitleText}</div>
+                    <div class="card-body p-0 table-responsive">
+                        <table class="table table-bordered text-center mb-0 analytics-table">
+                            <tr><th></th><th>男</th><th>女</th><th>小計</th></tr>
+                            <tr><td class="fw-bold">工作人員</td><td>${staffG.male}</td><td>${staffG.female}</td><td>${staffG.total}</td></tr>
+                            <tr><td class="fw-bold">學員</td><td>${camperG.male}</td><td>${camperG.female}</td><td>${camperG.total}</td></tr>
+                            <tr class="table-secondary fw-bold"><td>小計</td><td>${staffG.male + camperG.male}</td><td>${staffG.female + camperG.female}</td><td>${staffG.total + camperG.total}</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // 【元件 2】學員與隊輔總和
+        const renderCamperAdvisorTotal = () => `
+            <div class="col-12 mb-2">
+                <div class="card shadow-sm border-0 border-start border-primary border-5">
+                    <div class="card-header bg-white text-primary fw-bold border-bottom-0 fs-5">👥 學員與大小隊輔總和統計${statusTitleText}</div>
+                    <div class="card-body p-0 table-responsive">
+                        <table class="table table-bordered text-center mb-0 analytics-table">
+                            <tr><th></th><th>男</th><th>女</th><th>總人數</th></tr>
+                            <tr><td class="fw-bold">學員</td><td>${camperG.male}</td><td>${camperG.female}</td><td>${camperG.total}</td></tr>
+                            <tr><td class="fw-bold">大小隊輔</td><td>${advG.male}</td><td>${advG.female}</td><td>${advG.total}</td></tr>
+                            <tr class="table-primary fw-bold"><td>總和</td><td>${camperG.male + advG.male}</td><td>${camperG.female + advG.female}</td><td class="fs-5">${camperG.total + advG.total}</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // 【元件 3】學員報到與各組統計 (修正為自訂義排序)
+        const renderCamperStats = () => {
+            let block = `
+                <div class="col-12 col-lg-6">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-header bg-primary text-white fw-bold">學員報到與各組統計${statusTitleText}</div>
+                        <div class="card-body p-0 table-responsive">
+                            <table class="table table-bordered text-center mb-0 analytics-table table-sm">
+                                <tr><th>組別</th><th>男</th><th>女</th><th>合計</th></tr>
+            `;
+            const camperGroups = [...new Set(pureCampers.map(i => i.組別 || '未分組'))].sort((a,b) => parseGroupNum(a) - parseGroupNum(b));
+            camperGroups.forEach(g => {
+                const gData = getGenderCounts(pureCampers.filter(i => i.組別 === g), false);
+                block += `<tr><td>${g}</td><td>${gData.male}</td><td>${gData.female}</td><td>${gData.total}</td></tr>`;
+            });
+            block += `<tr class="table-secondary fw-bold"><td>合計</td><td>${camperG.male}</td><td>${camperG.female}</td><td>${camperG.total}</td></tr></table></div></div></div>`;
+            return block;
+        };
+
+        // 【元件 4】大小隊輔各組統計 (修改標題與排序)
+        const renderAdvisorStats = () => {
+            let block = `
+                <div class="col-12 col-lg-6">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-header bg-info text-dark fw-bold">大小隊輔各組統計${statusTitleText}</div>
+                        <div class="card-body p-0 table-responsive">
+                            <table class="table table-bordered text-center mb-0 analytics-table table-sm">
+                                <tr><th>組別</th><th>男</th><th>女</th><th>總和</th></tr>
+            `;
+            const advGroups = [...new Set(advisors.map(i => i.組別 || '未分組'))].sort((a,b) => parseGroupNum(a) - parseGroupNum(b));
+            advGroups.forEach(g => {
+                const gData = getGenderCounts(advisors.filter(i => i.組別 === g), false);
+                block += `<tr><td>${g}</td><td>${gData.male || '0'}</td><td>${gData.female || '0'}</td><td>${gData.total}</td></tr>`;
+            });
+            block += `<tr class="table-secondary fw-bold"><td>總和</td><td>${advG.male}</td><td>${advG.female}</td><td>${advG.total}</td></tr></table></div></div></div>`;
+            return block;
+        };
+
+        // 【元件 5】新增：大小隊輔 + 學員各組統計
+        const renderCamperAndAdvisorGroupStats = () => {
+            let block = `
+                <div class="col-12 col-lg-6">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-header bg-secondary text-white fw-bold">大小隊輔+學員各組統計${statusTitleText}</div>
+                        <div class="card-body p-0 table-responsive">
+                            <table class="table table-bordered text-center mb-0 analytics-table table-sm">
+                                <tr><th>組別</th><th>男</th><th>女</th><th>合計</th></tr>
+            `;
+            // 合併名單來計算各組
+            const combinedList = [...pureCampers, ...advisors];
+            const combinedGroups = [...new Set(combinedList.map(i => i.組別 || '未分組'))].sort((a,b) => parseGroupNum(a) - parseGroupNum(b));
+            
+            combinedGroups.forEach(g => {
+                const gData = getGenderCounts(combinedList.filter(i => i.組別 === g), false);
+                block += `<tr><td>${g}</td><td>${gData.male || '0'}</td><td>${gData.female || '0'}</td><td>${gData.total}</td></tr>`;
+            });
+            const cTotal = getGenderCounts(combinedList, false);
+            block += `<tr class="table-secondary fw-bold"><td>總計</td><td>${cTotal.male}</td><td>${cTotal.female}</td><td>${cTotal.total}</td></tr></table></div></div></div>`;
+            return block;
+        };
+
+        // 【元件 6】工作人員統計
+        const renderStaffStats = () => {
+            const roles = [...new Set(staffList.map(i => i.身分別 || '其他'))];
+            const staffGroups = [...new Set(staffList.map(i => i.組別 || '未分組'))].sort((a,b) => parseGroupNum(a) - parseGroupNum(b));
+
+            // 左側：各功能組
+            let groupsHtml = `<table class="table table-bordered text-center mb-0 analytics-table table-sm">
+                                <tr><th>各功能組</th><th>男</th><th>女</th><th>小計</th></tr>`;
+            staffGroups.forEach(g => {
+                const gData = getGenderCounts(staffList.filter(i => i.組別 === g), true);
+                groupsHtml += `<tr><td>${g}</td><td>${gData.male}</td><td>${gData.female}</td><td>${gData.total}</td></tr>`;
+            });
+            groupsHtml += `<tr class="table-secondary fw-bold"><td>小計</td><td>${staffG.male}</td><td>${staffG.female}</td><td>${staffG.total}</td></tr></table>`;
+
+            // 右側：身分別
+            let rolesHtml = `<table class="table table-bordered text-center mb-0 analytics-table table-sm">
+                                <tr><th>身分別</th><th>男</th><th>女</th><th>小計</th></tr>`;
+            roles.forEach(r => {
+                const rData = getGenderCounts(staffList.filter(i => i.身分別 === r), true);
+                rolesHtml += `<tr><td>${r}</td><td>${rData.male}</td><td>${rData.female}</td><td>${rData.total}</td></tr>`;
+            });
+            rolesHtml += `<tr class="table-secondary fw-bold"><td>小計</td><td>${staffG.male}</td><td>${staffG.female}</td><td>${staffG.total}</td></tr></table>`;
+
+            return `
+                <div class="col-12">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-header bg-success text-white fw-bold">工作人員組別與身分統計${statusTitleText}</div>
+                        <div class="card-body p-0">
+                            <div class="row g-0">
+                                <!-- 左邊區塊 (各功能組) -->
+                                <div class="col-12 col-md-6 border-end p-0">
+                                    <div class="table-responsive">${groupsHtml}</div>
+                                </div>
+                                <!-- 右邊區塊 (身分別) -->
+                                <div class="col-12 col-md-6 p-0">
+                                    <div class="table-responsive">${rolesHtml}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        };
+
+        // 根據選擇組合畫面，調整了插入順序讓排版更為工整
+        if (viewMode === 'viewAll') {
+            html += renderTotalSummary();
+            html += renderCamperStats();
+            html += renderAdvisorStats();
+            html += renderCamperAndAdvisorGroupStats();
+            html += renderStaffStats();
+        } else if (viewMode === 'viewCampers') {
+            html += renderCamperAdvisorTotal(); 
+            html += renderCamperStats();
+            html += renderAdvisorStats();
+            html += renderCamperAndAdvisorGroupStats();
+        } else if (viewMode === 'viewStaff') {
+            html += renderStaffStats();
+        }
+
+        document.getElementById('analyticsContent').innerHTML = html;
     }
 
+    function switchYear(year) { 
+        currentYear = year; 
+        updateGroupFilter(); 
+        renderTable(); 
+        
+        // 【新增邏輯】當管理者切換年度時，重新抓取該年度的未讀訊息
+        if (userRole === 'admin') {
+            stopAdminMessageListener();
+            startAdminMessageListener();
+        }
+    }
+    
+    function switchRole(role) { currentRole = role; window.scrollTo({ top: 0, behavior: 'instant' }); updateGroupFilter(); renderTable(); }
+    
     function updateGroupFilter() {
         const filterSelect = document.getElementById('groupFilter');
         const currentSelected = filterSelect.value;
-        const yearData = allCampData[currentYear] || {};
-        const list = yearData[currentRole] || [];
-        
+        const list = (allCampData[currentYear] || {})[currentRole] || [];
         const groups = [...new Set(list.map(item => String(item.組別 || '')).filter(g => g))];
-        
-        // 💡 增加「尚未報到」的選項
         filterSelect.innerHTML = '<option value="全部">全部組別</option><option value="尚未報到">⚠️ 尚未報到</option>';
         currentGroupOrder = []; 
-        
-        groups.forEach(g => {
-            filterSelect.innerHTML += `<option value="${g}">${g}</option>`;
-            currentGroupOrder.push(g); 
-        });
-        
-        // 確保切換時能保留「尚未報到」的選擇狀態
-        if (groups.includes(currentSelected) || currentSelected === "尚未報到") {
-            filterSelect.value = currentSelected;
-        }
+        groups.forEach(g => { filterSelect.innerHTML += `<option value="${g}">${g}</option>`; currentGroupOrder.push(g); });
+        if (groups.includes(currentSelected) || currentSelected === "尚未報到") filterSelect.value = currentSelected;
     }
 
-    function updateCloudField(index, field, value) {
-        if (!currentYear) return;
-        database.ref(`${currentYear}/${currentRole}/${index}/${field}`).set(value);
+    function handleNameSearch() {
+        document.getElementById('groupFilter').value = "全部";
+        document.getElementById('clearBtn').style.display = document.getElementById('nameSearch').value.trim() ? "block" : "none";
+        renderTable(); 
     }
+    
+    function clearSearchInput() {
+        document.getElementById('nameSearch').value = ""; 
+        document.getElementById('clearBtn').style.display = "none";
+        document.getElementById('groupFilter').value = "全部"; 
+        renderTable();         
+    }
+
+    function updateCloudField(index, field, value) { database.ref(`${currentYear}/${currentRole}/${index}/${field}`).set(value); }
 
     function calculateLiveStats() {
-        const selectedGroup = document.getElementById('groupFilter').value;
-        const effectiveGroup = selectedGroup === "尚未報到" ? "全部" : selectedGroup;
-        
-        const yearData = allCampData[currentYear] || {};
-        const campersList = yearData['campers'] || [];
-        const staffList = yearData['staff'] || [];
+        const effectiveGroup = document.getElementById('groupFilter').value === "尚未報到" ? "全部" : document.getElementById('groupFilter').value;
+        const campersList = (allCampData[currentYear] || {})['campers'] || [];
+        const staffList = (allCampData[currentYear] || {})['staff'] || [];
 
-        let camperChecked = 0, camperTotal = 0;
-        let staffChecked = 0, staffTotal = 0;
+        const cChecked = campersList.filter(i => !String(i.身分).includes("隊輔") && !String(i.身分).includes("工作人員") && (effectiveGroup === "全部" || i.組別 === effectiveGroup) && i.報到).length;
+        const cTotal = campersList.filter(i => !String(i.身分).includes("隊輔") && !String(i.身分).includes("工作人員") && (effectiveGroup === "全部" || i.組別 === effectiveGroup)).length;
+        const sChecked = staffList.filter(i => (effectiveGroup === "全部" || i.組別 === effectiveGroup) && i.報到).length;
+        const sTotal = staffList.filter(i => effectiveGroup === "全部" || i.組別 === effectiveGroup).length;
 
-        camperChecked = campersList.filter(i => !String(i.身分||'').includes("隊輔") && !String(i.身分||'').includes("工作人員") && (effectiveGroup === "全部" || String(i.組別||'') === effectiveGroup) && i.報到).length;
-        camperTotal = campersList.filter(i => !String(i.身分||'').includes("隊輔") && !String(i.身分||'').includes("工作人員") && (effectiveGroup === "全部" || String(i.組別||'') === effectiveGroup)).length;
-        
-        staffChecked = staffList.filter(i => (effectiveGroup === "全部" || String(i.組別||'') === effectiveGroup) && i.報到).length;
-        staffTotal = staffList.filter(i => effectiveGroup === "全部" || String(i.組別||'') === effectiveGroup).length;
-
-        // 💡 判斷目前的篩選狀態，決定顯示「已報到」還是「未報到」的人數
-        let displayCamperCount = camperChecked;
-        let displayStaffCount = staffChecked;
-
-        if (selectedGroup === "尚未報到") {
-            displayCamperCount = camperTotal - camperChecked;
-            displayStaffCount = staffTotal - staffChecked;
-        }
-
-        const camperPercent = camperTotal > 0 ? Math.round((displayCamperCount / camperTotal) * 100) : 0;
-        const staffPercent = staffTotal > 0 ? Math.round((displayStaffCount / staffTotal) * 100) : 0;
-
-        document.getElementById('camperStatsText').innerText = `${displayCamperCount} / ${camperTotal}`;
-        document.getElementById('camperStatsPercent').innerText = `${camperPercent}%`;
-        document.getElementById('staffStatsText').innerText = `${displayStaffCount} / ${staffTotal}`;
-        document.getElementById('staffStatsPercent').innerText = `${staffPercent}%`;
-
-        const cBox = document.getElementById('camperStatsBox');
-        const sBox = document.getElementById('staffStatsBox');
+        const isUnchecked = document.getElementById('groupFilter').value === "尚未報到";
+        document.getElementById('camperStatsText').innerText = `${isUnchecked ? cTotal - cChecked : cChecked} / ${cTotal}`;
+        document.getElementById('camperStatsPercent').innerText = `${cTotal > 0 ? Math.round(((isUnchecked ? cTotal - cChecked : cChecked) / cTotal) * 100) : 0}%`;
+        document.getElementById('staffStatsText').innerText = `${isUnchecked ? sTotal - sChecked : sChecked} / ${sTotal}`;
+        document.getElementById('staffStatsPercent').innerText = `${sTotal > 0 ? Math.round(((isUnchecked ? sTotal - sChecked : sChecked) / sTotal) * 100) : 0}%`;
 
         if (currentRole === 'campers') {
-            cBox.className = "card p-3 shadow-sm stats-box active-camper";
-            sBox.className = "card p-3 shadow-sm stats-box inactive-box";
-            
-            if (selectedGroup === "尚未報到") {
-                document.getElementById('camperGroupLabel').innerText = "尚未報到學員 (不含隊輔)";
-            } else {
-                document.getElementById('camperGroupLabel').innerText = effectiveGroup === "全部" ? "全體學員總計 (不含隊輔)" : `學員 ｜ 第 ${effectiveGroup} 組`;
-            }
-            document.getElementById('staffGroupLabel').innerText = "全體工作團隊總計"; 
+            document.getElementById('camperStatsBox').className = "card p-3 shadow-sm stats-box active-camper";
+            document.getElementById('staffStatsBox').className = "card p-3 shadow-sm stats-box inactive-box";
         } else {
-            cBox.className = "card p-3 shadow-sm stats-box inactive-box";
-            sBox.className = "card p-3 shadow-sm stats-box active-staff";
-            document.getElementById('camperGroupLabel').innerText = "全體學員總計 (不含隊輔)";
-            
-            if (selectedGroup === "尚未報到") {
-                document.getElementById('staffGroupLabel').innerText = "尚未報到工作人員";
-            } else {
-                document.getElementById('staffGroupLabel').innerText = effectiveGroup === "全部" ? "全體工作團隊總計" : `工作人員 ｜ ${effectiveGroup}`;
-            }
+            document.getElementById('camperStatsBox').className = "card p-3 shadow-sm stats-box inactive-box";
+            document.getElementById('staffStatsBox').className = "card p-3 shadow-sm stats-box active-staff";
         }
     }
 
     function showGroupStats(targetRole) {
-        if (!currentYear || !allCampData[currentYear]) {
-            alert("目前尚無資料可供統計！");
-            return;
-        }
+        const list = (allCampData[currentYear] || {})[targetRole] || [];
+        const tableBody = document.getElementById('groupStatsTableBody');
+        tableBody.innerHTML = "";
+        let grandTotal = 0, grandChecked = 0, grandMale = 0, grandFemale = 0;
 
-        const yearData = allCampData[currentYear];
-        const list = yearData[targetRole] || [];
-        
-        if (list.length === 0) {
-            alert("該類別目前無資料！");
-            return;
-        }
-
-        const rawGroups = [...new Set(list.map(item => String(item.組別 || '')).filter(g => g))];
-        const groups = rawGroups.sort((a, b) => {
-            if (targetRole === currentRole && currentGroupOrder.length > 0) {
-                 return currentGroupOrder.indexOf(a) - currentGroupOrder.indexOf(b);
-            }
+        const groups = [...new Set(list.map(i => i.組別).filter(g => g))].sort((a, b) => {
+            if (targetRole === currentRole && currentGroupOrder.length > 0) return currentGroupOrder.indexOf(a) - currentGroupOrder.indexOf(b);
             const numA = parseInt(a.replace(/\D/g, ''));
             const numB = parseInt(b.replace(/\D/g, ''));
             if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
             return a.localeCompare(b, 'zh-TW');
         });
-
-        const tableBody = document.getElementById('groupStatsTableBody');
-        tableBody.innerHTML = "";
         
-        let grandTotal = 0;
-        let grandChecked = 0;
-        let grandMale = 0;
-        let grandFemale = 0;
-
         groups.forEach(g => {
-            let groupItems = [];
-            if (targetRole === 'campers') {
-                groupItems = list.filter(i => String(i.組別 || '') === g && !String(i.身分||'').includes("隊輔") && !String(i.身分||'').includes("工作人員"));
-            } else {
-                groupItems = list.filter(i => String(i.組別 || '') === g);
-            }
+            const gItems = list.filter(i => i.組別 === g && (targetRole !== 'campers' || (!String(i.身分).includes("隊輔") && !String(i.身分).includes("工作人員"))));
+            const checked = gItems.filter(i => i.報到).length;
+            const male = gItems.filter(i => i.報到 && String(targetRole === 'campers' ? i.性別 : i.生理性別).includes('男')).length;
+            const female = gItems.filter(i => i.報到 && String(targetRole === 'campers' ? i.性別 : i.生理性別).includes('女')).length;
 
-            const total = groupItems.length;
-            const checked = groupItems.filter(i => i.報到).length;
-            
-            let maleCount = 0;
-            let femaleCount = 0;
-            if (targetRole === 'campers') {
-                maleCount = groupItems.filter(i => i.報到 && String(i.性別 || '').includes('男')).length;
-                femaleCount = groupItems.filter(i => i.報到 && String(i.性別 || '').includes('女')).length;
-            } else {
-                maleCount = groupItems.filter(i => i.報到 && String(i.生理性別 || '').includes('男')).length;
-                femaleCount = groupItems.filter(i => i.報到 && String(i.生理性別 || '').includes('女')).length;
-            }
-
-            if (total > 0) {
-                grandTotal += total;
-                grandChecked += checked;
-                grandMale += maleCount;
-                grandFemale += femaleCount;
-                
-                const percent = Math.round((checked / total) * 100);
-                
-                tableBody.innerHTML += `
-                    <tr>
-                        <td class="fw-bold">${g}</td>
-                        <td class="text-primary fw-semibold">${maleCount}</td>
-                        <td class="text-danger fw-semibold">${femaleCount}</td>
-                        <td class="text-success fw-bold">${checked}</td>
-                        <td>${total}</td>
-                        <td><span class="badge bg-${percent === 100 ? 'success' : (percent > 0 ? 'primary' : 'secondary')}">${percent}%</span></td>
-                    </tr>
-                `;
+            if (gItems.length > 0) {
+                grandTotal += gItems.length; grandChecked += checked; grandMale += male; grandFemale += female;
+                tableBody.innerHTML += `<tr><td class="fw-bold">${g}</td><td class="text-primary">${male}</td><td class="text-danger">${female}</td><td class="text-success fw-bold">${checked}</td><td>${gItems.length}</td><td><span class="badge bg-primary">${Math.round(checked/gItems.length*100)}%</span></td></tr>`;
             }
         });
-
-        const grandPercent = grandTotal > 0 ? Math.round((grandChecked / grandTotal) * 100) : 0;
-        tableBody.innerHTML += `
-            <tr class="table-secondary fw-bold" style="border-top: 2px solid #333;">
-                <td>總計</td>
-                <td class="text-primary">${grandMale}</td>
-                <td class="text-danger">${grandFemale}</td>
-                <td class="text-success">${grandChecked}</td>
-                <td>${grandTotal}</td>
-                <td><span class="badge bg-danger">${grandPercent}%</span></td>
-            </tr>
-        `;
-
-        const titleElement = document.getElementById('groupStatsModalTitle');
-        const headerElement = document.getElementById('groupStatsModalHeader');
-        const closeBtn = document.getElementById('groupStatsModalCloseBtn');
-
-        if (targetRole === 'campers') {
-            titleElement.innerText = "📊 學員各組報到與性別統計 (不含隊輔)";
-            headerElement.className = "modal-header premium-blue-header"; 
-            closeBtn.className = "btn-close btn-close-white";
-        } else {
-            titleElement.innerText = "📊 工作團隊各組報到與性別統計";
-            headerElement.className = "modal-header premium-green-header"; 
-            closeBtn.className = "btn-close btn-close-white";
-        }
-
-        const modal = new bootstrap.Modal(document.getElementById('groupStatsModal'));
-        modal.show();
-    }
-
-    function handleNameSearch() {
-        const searchInput = document.getElementById('nameSearch');
-        const clearBtn = document.getElementById('clearBtn');
+        tableBody.innerHTML += `<tr class="table-secondary fw-bold"><td>總計</td><td class="text-primary">${grandMale}</td><td class="text-danger">${grandFemale}</td><td class="text-success">${grandChecked}</td><td>${grandTotal}</td><td><span class="badge bg-danger">${Math.round(grandChecked/grandTotal*100)}%</span></td></tr>`;
         
-        if (searchInput.value.trim() !== "") {
-            document.getElementById('groupFilter').value = "全部";
-            clearBtn.style.display = "block";
-        } else {
-            clearBtn.style.display = "none";
-        }
-        renderTable(); 
-    }
-
-    function clearSearchInput() {
-        const searchInput = document.getElementById('nameSearch');
-        searchInput.value = ""; 
-        document.getElementById('clearBtn').style.display = "none";
-        document.getElementById('groupFilter').value = "全部"; 
-        renderTable();         
-        searchInput.focus();   
+        document.getElementById('groupStatsModalTitle').innerText = targetRole === 'campers' ? "📊 學員各組報到與性別統計" : "📊 工作團隊各組報到統計";
+        document.getElementById('groupStatsModalHeader').className = targetRole === 'campers' ? "modal-header premium-blue-header" : "modal-header premium-green-header";
+        new bootstrap.Modal(document.getElementById('groupStatsModal')).show();
     }
 
     function renderTable() {
-        const header = document.getElementById('tableHeader');
         const body = document.getElementById('tableBody');
-        const selectedGroup = document.getElementById('groupFilter').value;
-        const nameSearchQuery = document.getElementById('nameSearch').value.trim().toLowerCase();
-
+        const searchQ = document.getElementById('nameSearch').value.trim().toLowerCase();
+        const selGroup = document.getElementById('groupFilter').value;
+        const list = (allCampData[currentYear] || {})[currentRole] || [];
         body.innerHTML = "";
-        const yearData = allCampData[currentYear] || {};
-        const list = yearData[currentRole] || [];
-
         calculateLiveStats();
 
-        const clearBtn = document.getElementById('clearBtn');
-        if (nameSearchQuery !== "") {
-            clearBtn.style.display = "block";
-        } else {
-            clearBtn.style.display = "none";
-        }
+        const isAdmin = userRole === 'admin';
+        const isRenzhen = userRole === 'renzhen';
 
-        if (list.length === 0) {
-            body.innerHTML = `<tr><td colspan="20" class="text-muted p-4">⚠️ 該年度目前沒有資料。</td></tr>`;
-            return;
-        }
+        document.getElementById('tableHeader').innerHTML = currentRole === 'campers' ? 
+            `<tr><th>報到</th><th>發票</th><th>同意書</th><th>組別</th><th>身分</th><th>姓名</th><th>性別</th><th style="width: 190px;">報到備註</th><th style="width: 190px;">待確認事項</th><th style="width: 190px;">✍️ 現場備註</th></tr>` :
+            `<tr><th>報到</th><th>組別</th><th>職務</th><th>姓名</th><th>生理性別</th><th>身分別</th><th>⏱️ 全程參與</th><th style="width: 190px;">✍️ 現場備註</th></tr>`;
 
-        const isAdminUser = (userRole === 'admin');
-        const isRenzhenUser = (userRole === 'renzhen');
+        list.forEach((item, index) => {
+            const isAdv = String(item.身分).includes("隊輔") || String(item.身分).includes("工作人員");
+            if (selGroup === "尚未報到" && (item.報到 || (currentRole === 'campers' && isAdv))) return;
+            if (selGroup !== "尚未報到" && selGroup !== "全部" && item.組別 !== selGroup) return;
+            if (searchQ && !String(item.姓名).toLowerCase().includes(searchQ)) return;
 
-        if (currentRole === 'campers') {
-            header.innerHTML = `
-                <tr>
-                    <th>報到</th><th>發票</th><th>同意書</th>
-                    <th>組別</th><th>身分</th><th>姓名</th><th>性別</th>
-                    <th style="width: 190px;">報到備註</th>
-                    <th style="width: 190px;">待確認事項</th>
-                    <th style="width: 190px;">✍️ 現場備註</th>
-                </tr>`;
-            
-            list.forEach((item, index) => {
-                const identityStr = String(item.身分 || '');
-                const isAdvisor = identityStr.includes("隊輔") || identityStr.includes("工作人員");
+            const tr = document.createElement('tr');
+            if (currentRole === 'campers' && isAdv) tr.className = "advisor-row";
 
-                // 💡 修正後的「尚未報到」過濾邏輯
-                if (selectedGroup === "尚未報到") {
-                    if (item.報到) return;       // 已報到者不顯示
-                    if (isAdvisor) return;       // 是隊輔也不顯示
-                } else if (selectedGroup !== "全部" && String(item.組別 || '') !== selectedGroup) {
-                    return;
-                }
-                
-                const nameStr = String(item.姓名 || '').toLowerCase();
-                if (nameSearchQuery && !nameStr.includes(nameSearchQuery)) return;
-                
-                let tr = document.createElement('tr');
-                if (isAdvisor) tr.className = "advisor-row";
-
-                let checkinTdHtml = "";
-                let invoiceTdHtml = "";
-                let consentTdHtml = "";
-
-                const checkinDisabled = !isAdminUser ? 'disabled' : '';
-                const invoiceDisabled = !isAdminUser ? 'disabled' : '';
-                const consentDisabled = !(isAdminUser || isRenzhenUser) ? 'disabled' : ''; 
-                
-                const notesReadonly = !isAdminUser ? 'readonly' : '';
-                
-                const checkinNoteBlur = isAdminUser ? `onblur="updateCloudField(${index}, '報到備註', this.value)"` : '';
-                const confirmBlur = isAdminUser ? `onblur="updateCloudField(${index}, '待確認事項', this.value)"` : '';
-                const liveNoteBlur = isAdminUser ? `onblur="updateCloudField(${index}, '備註', this.value)"` : '';
-
-                if (isAdvisor) {
-                    checkinTdHtml = "";
-                    invoiceTdHtml = "";
-                    consentTdHtml = "";
-                } else {
-                    checkinTdHtml = `<input type="checkbox" class="form-check-input" ${item.報到 ? 'checked' : ''} ${checkinDisabled} onchange="updateCloudField(${index}, '報到', this.checked)">`;
-                    consentTdHtml = `<input type="checkbox" class="form-check-input" ${item.同意書 ? 'checked' : ''} ${consentDisabled} onchange="updateCloudField(${index}, '同意書', this.checked)">`;
-                    
-                    if (item.繳費狀況 && (String(item.繳費狀況).trim() === "感恩戶" || String(item.繳費狀況).trim() === "師姑幫忙繳費")) {
-                        invoiceTdHtml = `<span class="text-danger fw-bold" style="font-size: 1.2rem;">X</span>`;
-                    } else {
-                        invoiceTdHtml = `<input type="checkbox" class="form-check-input" ${item.發票 ? 'checked' : ''} ${invoiceDisabled} onchange="updateCloudField(${index}, '發票', this.checked)">`;
-                    }
-                }
-
-                let checkinNoteHtml = "";
-                let confirmHtml = "";
-                let liveNoteHtml = "";
-
-                if (isAdvisor) {
-                    checkinNoteHtml = "";
-                    confirmHtml = "";
-                    liveNoteHtml = "";
-                } else {
-                    checkinNoteHtml = `<textarea class="form-control form-control-sm border-success text-center input-expandable input-short-pop" ${notesReadonly} ${checkinNoteBlur}>${item.報到備註 || ''}</textarea>`;
-                    confirmHtml = `<textarea class="form-control form-control-sm border-success text-center input-expandable input-short-pop" ${notesReadonly} ${confirmBlur}>${item.待確認事項 || ''}</textarea>`;
-                    liveNoteHtml = `<textarea class="form-control form-control-sm border-primary input-expandable input-long-pop" ${notesReadonly} ${liveNoteBlur}>${item.備註 || ''}</textarea>`;
-                }
-
+            if (currentRole === 'campers') {
                 tr.innerHTML = `
-                    <td>${checkinTdHtml}</td>
-                    <td>${invoiceTdHtml}</td>
-                    <td>${consentTdHtml}</td>
+                    <td>${isAdv ? '' : `<input type="checkbox" class="form-check-input" ${item.報到 ? 'checked' : ''} ${!isAdmin ? 'disabled' : ''} onchange="updateCloudField(${index}, '報到', this.checked)">`}</td>
+                    <td>${isAdv ? '' : ((item.繳費狀況==="感恩戶" || item.繳費狀況==="師姑幫忙繳費") ? '<span class="text-danger fw-bold">X</span>' : `<input type="checkbox" class="form-check-input" ${item.發票 ? 'checked' : ''} ${!isAdmin ? 'disabled' : ''} onchange="updateCloudField(${index}, '發票', this.checked)">`)}</td>
+                    <td>${isAdv ? '' : `<input type="checkbox" class="form-check-input" ${item.同意書 ? 'checked' : ''} ${!(isAdmin||isRenzhen) ? 'disabled' : ''} onchange="updateCloudField(${index}, '同意書', this.checked)">`}</td>
                     <td>${item.組別 || ''}</td>
-                    <td><span class="${isAdvisor ? 'fw-bold text-primary' : ''}">${item.身分 || ''}</span></td>
+                    <td><span class="${isAdv ? 'fw-bold text-primary' : ''}">${item.身分 || ''}</span></td>
                     <td class="fw-bold">${item.姓名 || ''}</td>
                     <td>${item.性別 || ''}</td>
-                    <td class="td-snug">${checkinNoteHtml}</td>
-                    <td class="td-snug">${confirmHtml}</td>
-                    <td class="td-snug">${liveNoteHtml}</td>
+                    <td class="td-snug">${isAdv ? '' : `<textarea class="form-control form-control-sm border-success text-center input-expandable input-short-pop" ${!isAdmin ? 'readonly' : ''} ${isAdmin ? `onblur="updateCloudField(${index}, '報到備註', this.value)"` : ''}>${item.報到備註 || ''}</textarea>`}</td>
+                    <td class="td-snug">${isAdv ? '' : `<textarea class="form-control form-control-sm border-success text-center input-expandable input-short-pop" ${!isAdmin ? 'readonly' : ''} ${isAdmin ? `onblur="updateCloudField(${index}, '待確認事項', this.value)"` : ''}>${item.待確認事項 || ''}</textarea>`}</td>
+                    <td class="td-snug">${isAdv ? '' : `<textarea class="form-control form-control-sm border-primary input-expandable input-long-pop" ${!isAdmin ? 'readonly' : ''} ${isAdmin ? `onblur="updateCloudField(${index}, '備註', this.value)"` : ''}>${item.備註 || ''}</textarea>`}</td>
                 `;
-                body.appendChild(tr);
-            });
-        } else {
-            header.innerHTML = `
-                <tr>
-                    <th>報到</th><th>組別</th><th>職務</th><th>姓名</th>
-                    <th>生理性別</th><th>身分別</th><th>⏱️ 全程參與</th>
-                    <th style="width: 190px;">✍️ 現場備註</th>
-                </tr>`;
-            
-            list.forEach((item, index) => {
-                if (selectedGroup === "尚未報到") {
-                    if (item.報到) return; 
-                } else if (selectedGroup !== "全部" && String(item.組別 || '') !== selectedGroup) {
-                    return;
-                }
-                
-                const nameStr = String(item.姓名 || '').toLowerCase();
-                if (nameSearchQuery && !nameStr.includes(nameSearchQuery)) return;
-
-                const checkinDisabled = !isAdminUser ? 'disabled' : '';
-                const notesReadonly = !isAdminUser ? 'readonly' : '';
-                const partNoteBlur = isAdminUser ? `onblur="updateCloudField(${index}, '全程參與', this.value)"` : '';
-                const liveNoteBlur = isAdminUser ? `onblur="updateCloudField(${index}, '備註', this.value)"` : '';
-
-                let tr = document.createElement('tr');
+            } else {
                 tr.innerHTML = `
-                    <td><input type="checkbox" class="form-check-input" ${item.報到 ? 'checked' : ''} ${checkinDisabled} onchange="updateCloudField(${index}, '報到', this.checked)"></td>
-                    <td>${item.組別 || ''}</td>
-                    <td>${item.職務 || ''}</td>
-                    <td class="fw-bold">${item.姓名 || ''}</td>
-                    <td>${item.生理性別 || ''}</td>
-                    <td>${item.身分別 || ''}</td>
-                    <td class="td-snug"><textarea class="form-control form-control-sm border-success text-center input-expandable input-part-pop" ${notesReadonly} ${partNoteBlur}>${item.全程參與 || ''}</textarea></td>
-                    <td class="td-snug"><textarea class="form-control form-control-sm border-primary input-expandable input-long-pop" ${notesReadonly} ${liveNoteBlur}>${item.備註 || ''}</textarea></td>
+                    <td><input type="checkbox" class="form-check-input" ${item.報到 ? 'checked' : ''} ${!isAdmin ? 'disabled' : ''} onchange="updateCloudField(${index}, '報到', this.checked)"></td>
+                    <td>${item.組別 || ''}</td><td>${item.職務 || ''}</td><td class="fw-bold">${item.姓名 || ''}</td><td>${item.生理性別 || ''}</td><td>${item.身分別 || ''}</td>
+                    <td class="td-snug"><textarea class="form-control form-control-sm border-success text-center input-expandable input-part-pop" ${!isAdmin ? 'readonly' : ''} ${isAdmin ? `onblur="updateCloudField(${index}, '全程參與', this.value)"` : ''}>${item.全程參與 || ''}</textarea></td>
+                    <td class="td-snug"><textarea class="form-control form-control-sm border-primary input-expandable input-long-pop" ${!isAdmin ? 'readonly' : ''} ${isAdmin ? `onblur="updateCloudField(${index}, '備註', this.value)"` : ''}>${item.備註 || ''}</textarea></td>
                 `;
-                body.appendChild(tr);
-            });
-        }
+            }
+            body.appendChild(tr);
+        });
     }
 </script>
 </body>
