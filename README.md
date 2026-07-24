@@ -1,5 +1,6 @@
 # cijiguozhongkuailechengzhangyi
 慈濟暑期國中快樂成長營
+
 [國中營現場即時管理系統](https://jouchenliu.github.io/cijiguozhongkuailechengzhangyi/)
 
 ## 系統使用者權限設定
@@ -15,9 +16,9 @@ userRole:
 
 ## 管理對象與(後端)資料欄位
 * currentyear/campers: 學員名單(含隊輔)
-  * 
+  * 報到、發票、同意書、身分、繳費狀況、組別、姓名、性別、待確認事項、報到備註、備註
 * currentyear/staff: 慈青工作人員
-  * 
+  * 報到、職務、身分別、組別、姓名、生理性別、全程參與、備註
 
 ## 系統功能
 
